@@ -1,379 +1,383 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ModVault – Game Mods Hub</title>
-  <meta name="description" content="ModVault – Discover, download, and manage game mods for your favorite titles.">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg-1:#0f1724;
-      --bg-2:#0b1220;
-      --panel:#0f1720;
-      --muted:#9aa4b2;
-      --accent1:#3b82f6;
-      --accent2:#7c3aed;
-      --card:#0b0d10;
-      --glass: rgba(255,255,255,0.03);
-      --maxw:1200px;
-      --radius:12px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModVault – Game Mods</title>
 
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#e6eef8;background:linear-gradient(180deg,var(--bg-1),var(--bg-2));-webkit-font-smoothing:antialiased}
-    a{color:inherit;text-decoration:none}
-    button{font:inherit}
+<style>
+/* ========== ROOT COLORS ========== */
+:root {
+  --bg: #1c1c1c;
+  --sidebar: #111;
+  --card: #242424;
+  --text: #fff;
+  --muted: #bbb;
+  --blue: #0d6efd;
+  --blue-hover: #0b5cd6;
+}
 
-    /* Header */
-    header.topbar{
-      position:sticky;top:0;z-index:60;
-      backdrop-filter: blur(6px);
-      background: linear-gradient(180deg, rgba(2,6,23,0.5), rgba(2,6,23,0.45));
-      border-bottom: 1px solid rgba(255,255,255,0.03);
-    }
-    .topbar-inner{
-      max-width:var(--maxw);margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:12px;
-    }
-    .brand{display:flex;align-items:center;gap:10px}
-    .logo{
-      width:44px;height:44px;border-radius:10px;display:grid;place-items:center;
-      background:linear-gradient(135deg,var(--accent1),var(--accent2));
-      font-weight:800;font-size:18px;color:white;
-    }
-    .site-title{font-weight:800;font-size:18px}
+/* ========== GLOBAL ========== */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+}
 
-    .search-wrap{flex:1;min-width:120px;max-width:700px;position:relative}
-    .search-wrap input{
-      width:100%;padding:10px 14px 10px 40px;border-radius:999px;border:1px solid rgba(255,255,255,0.04);
-      background:rgba(255,255,255,0.02);color:var(--muted);
-      outline:none;
-    }
-    .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px}
+/* ========== SIDEBAR ========== */
+.sidebar {
+  width: 240px;
+  background: var(--sidebar);
+  padding: 20px;
+  box-sizing: border-box;
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+}
 
-    /* Hamburger for mobile */
-    .hamburger{
-      display:none;background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:10px;color:var(--muted);
-      cursor:pointer;
-    }
+.sidebar h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
 
-    .upload-btn{
-      padding:8px 12px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--accent1),var(--accent2));
-      color:white;font-weight:700;cursor:pointer;
-    }
+.game-button {
+  width: 100%;
+  background: #222;
+  color: #fff;
+  padding: 12px;
+  text-align: left;
+  border: none;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 15px;
+}
+.game-button:hover {
+  background: #333;
+}
+.game-button.active {
+  background: var(--blue);
+}
 
-    /* Layout */
-    .layout{
-      max-width:var(--maxw);margin:18px auto;padding:0 16px;display:grid;grid-template-columns:260px 1fr;gap:20px;
-    }
+/* ========== MOBILE HAMBURGER ========== */
+.hamburger {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  width: 35px;
+  height: 35px;
+  background: #00000070;
+  border-radius: 6px;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6px;
+  cursor: pointer;
+  z-index: 9999;
+}
+.hamburger div {
+  width: 100%;
+  height: 4px;
+  background: white;
+  margin: 3px 0;
+  border-radius: 3px;
+}
 
-    /* Sidebar */
-    .sidebar{
-      background:var(--panel);border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.02);
-      height:calc(100vh - 130px);overflow:auto;
-    }
-    .sidebar h3{margin:0 0 10px 0;font-size:16px}
-    .game-btn{
-      display:block;width:100%;text-align:left;padding:10px 10px;border-radius:10px;border:none;background:transparent;color:var(--muted);
-      margin-bottom:8px;cursor:pointer;
-    }
-    .game-btn.active{background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));color:white;font-weight:600}
+/* Sidebar hidden on mobile until opened */
+.sidebar.hidden {
+  transform: translateX(-260px);
+}
 
-    /* Main content */
-    main.content{
-      min-height:60vh;
-    }
-    .section-title{display:flex;align-items:end;gap:12px}
-    .section-title h2{margin:0;font-size:22px}
-    .mods-grid{
-      margin-top:16px;display:grid;gap:18px;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    }
+/* ========== MAIN CONTENT ========== */
+.main {
+  margin-left: 260px;
+  padding: 20px;
+  flex: 1;
+}
 
-    .mod-card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.03);padding:12px;border-radius:12px;display:flex;flex-direction:column;gap:8px;
-      transition:transform .15s ease,box-shadow .15s ease;
-    }
-    .mod-card:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(2,6,23,0.6)}
-    .mod-thumb{width:100%;height:140px;border-radius:8px;background:#06070a;display:block;object-fit:cover}
-    .mod-title{font-weight:800;font-size:16px;margin:6px 0 0 0}
-    .mod-desc{color:var(--muted);font-size:14px;margin:0}
-    .mod-meta{display:flex;align-items:center;gap:8px;margin-top:auto}
-    .mod-meta .game-name{color:var(--muted);font-size:13px}
-    .download-btn{margin-left:auto;padding:8px 12px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:white;cursor:pointer}
+h1 {
+  margin-top: 0;
+}
 
-    /* Mobile slide-in sidebar */
-    .overlay{display:none;position:fixed;inset:0;background:rgba(2,6,23,0.45);z-index:70;opacity:0;pointer-events:none;transition:opacity .18s}
-    .overlay.open{display:block;opacity:1;pointer-events:auto}
+/* Search bar */
+#search {
+  width: 100%;
+  background: #222;
+  border: none;
+  padding: 12px;
+  color: white;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
 
-    .mobile-drawer{
-      position:fixed;top:0;left:-320px;bottom:0;width:300px;background:var(--panel);z-index:80;padding:16px;border-right:1px solid rgba(255,255,255,0.02);
-      transition:left .22s cubic-bezier(.2,.9,.2,1);
-    }
-    .mobile-drawer.open{left:0}
+/* ========== MOD GRID ========== */
+.mods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
 
-    /* Footer small */
-    footer{max-width:var(--maxw);margin:26px auto;padding:18px;color:var(--muted);font-size:13px}
+.mod-card {
+  background: var(--card);
+  border-radius: 10px;
+  overflow: hidden;
+  padding-bottom: 10px;
+}
 
-    /* Responsive tweaks */
-    @media (max-width: 900px){
-      .layout{grid-template-columns: 1fr;padding:0 12px;margin-left:0}
-      .sidebar{display:none}
-      .hamburger{display:inline-block}
-      .search-wrap{max-width:unset}
-      header.topbar{position:sticky}
-      .mobile-drawer{width:86vw}
-    }
-    @media (max-width:480px){
-      .mod-thumb{height:120px}
-      .mod-title{font-size:15px}
-      .download-btn{padding:8px 10px}
-    }
-  </style>
+.mod-thumb {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.mod-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px;
+}
+
+.mod-desc {
+  color: var(--muted);
+  margin: 0 10px 10px 10px;
+}
+
+.game-name {
+  color: var(--blue);
+  font-size: 14px;
+  margin: 0 10px;
+}
+
+/* Download button */
+.download-btn {
+  width: calc(100% - 20px);
+  margin: 10px;
+  padding: 10px;
+  border: none;
+  background: var(--blue);
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.download-btn:hover {
+  background: var(--blue-hover);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 900px) {
+  .main {
+    margin-left: 0;
+  }
+  .hamburger {
+    display: flex;
+  }
+  .sidebar {
+    transform: translateX(-260px);
+  }
+  .sidebar.active {
+    transform: translateX(0);
+  }
+}
+</style>
 </head>
+
 <body>
 
-  <header class="topbar" role="banner">
-    <div class="topbar-inner">
-      <div class="brand" aria-hidden>
-        <div class="logo">MV</div>
-        <div class="site-title">ModVault</div>
-      </div>
+<!-- HAMBURGER MENU (MOBILE) -->
+<div class="hamburger" onclick="toggleSidebar()">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
 
-      <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-controls="mobileDrawer" aria-expanded="false">☰</button>
+<!-- SIDEBAR -->
+<div class="sidebar hidden" id="sidebar">
+  <h2>Games</h2>
+  <div id="gameList"></div>
+</div>
 
-      <div class="search-wrap" style="flex:1">
-        <span class="search-icon">🔎</span>
-        <input id="globalSearch" placeholder="Search mods or games…" aria-label="Search mods">
-      </div>
+<!-- MAIN CONTENT -->
+<div class="main">
+  <h1 id="title">Select a Game</h1>
+  <input type="text" id="search" placeholder="Search mods...">
 
-      <button class="upload-btn" id="uploadBtn">Upload Mod</button>
-    </div>
-  </header>
-
-  <!-- overlay + mobile drawer -->
-  <div class="overlay" id="overlay" tabindex="-1" aria-hidden="true"></div>
-  <aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <strong style="font-size:16px">Games</strong>
-      <button id="closeMobile" class="btn" aria-label="Close menu" style="background:transparent;border:none;color:var(--muted);font-size:18px">✕</button>
-    </div>
-    <div id="mobileGameList"></div>
-  </aside>
-
-  <div class="layout" role="main">
-    <!-- Sidebar (desktop) -->
-    <aside class="sidebar" id="sidebar" aria-label="Game list">
-      <h3>Games</h3>
-      <div id="gameList"></div>
-    </aside>
-
-    <!-- Main content -->
-    <main class="content">
-      <div class="section-title">
-        <h2 id="currentTitle">Featured Mods</h2>
-      </div>
-
-      <div style="margin-top:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-        <div style="color:var(--muted);font-size:14px" id="modsCount">Browse mods</div>
-      </div>
-
-      <div class="mods-grid" id="modsGrid" aria-live="polite" style="margin-top:18px"></div>
-    </main>
-  </div>
-
-  <footer>
-    © <span id="year"></span> ModVault — Built for gamers.
-  </footer>
+  <div class="mods-grid" id="modsGrid"></div>
+</div>
 
 <script>
-/* -----------------------
-   GAMES DATA (EASY TO EDIT)
-   Edit this block to add games and mods.
-   Each game object: { name, thumbnail (optional), mods: [{ id, title, desc, image (optional), download }] }
-   ----------------------- */
+
+/* ----------------------------------------------------
+   GAMES DATA (EASY TO EDIT — JUST LIKE PRODUCTS)
+---------------------------------------------------- */
+
 const GAMES = [
   {
+    id: "g1",
     name: "GTA V",
-    thumbnail: "",
+    category: "Open World",
+    image: "",
     mods: [
-      { id: "gta-ultra-gfx", title: "Ultra Graphics Overhaul", desc: "Enhances visuals with 4K textures and improved lighting.", image: "https://images.unsplash.com/photo-1542751371-29b0f74f9713?w=1200&q=60", download: "#" },
-      { id: "gta-speed", title: "Real Physics Tweaks", desc: "Adjusted handling and vehicle physics for more realism.", image: "https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?w=1200&q=60", download: "#" }
+      {
+        id: "gta1",
+        title: "Ultra Graphics Overhaul",
+        description: "4K textures + advanced lighting.",
+        image: "https://images.unsplash.com/photo-1542751371-29b0f74f9713?w=1200",
+        download_link: "#"
+      },
+      {
+        id: "gta2",
+        title: "LSPDFR",
+        description: "Become a police officer in GTA V.",
+        image: "https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?w=1200",
+        download_link: "#"
+      }
     ]
   },
+
   {
+    id: "g2",
     name: "Minecraft",
-    thumbnail: "",
+    category: "Sandbox",
     mods: [
-      { id: "mc-physics", title: "Realistic Physics Engine", desc: "Adds realistic movement and gravity.", image: "https://images.unsplash.com/photo-1545511343-d8b5d2f53b5b?w=1200&q=60", download: "#" },
-      { id: "mc-shaders", title: "Ultra Shaders Pack", desc: "Beautiful lighting & shadows, requires OptiFine.", image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=60", download: "#" }
+      {
+        id: "mc1",
+        title: "Ultra Shaders",
+        description: "Beautiful lighting + shadows.",
+        image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200",
+        download_link: "#"
+      },
+      {
+        id: "mc2",
+        title: "Physics Mod",
+        description: "Objects break and fall realistically.",
+        image: "https://images.unsplash.com/photo-1545511343-d8b5d2f53b5b?w=1200",
+        download_link: "#"
+      }
     ]
   },
+
   {
+    id: "g3",
     name: "Skyrim",
-    thumbnail: "",
+    category: "RPG",
     mods: [
-      { id: "sk-ui", title: "Modern UI Revamp", desc: "Complete UI redesign for better menus and inventory.", image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1200&q=60", download: "#" },
-      { id: "sk-enb", title: "ENB Lighting Pack", desc: "Next-level lighting and color grading.", image: "https://images.unsplash.com/photo-1519340243566-3d6cc8d25539?w=1200&q=60", download: "#" }
+      {
+        id: "sk1",
+        title: "ENB Lighting Pack",
+        description: "Next-level realistic lighting.",
+        image: "https://images.unsplash.com/photo-1519340243566-3d6cc8d25539?w=1200",
+        download_link: "#"
+      },
+      {
+        id: "sk2",
+        title: "SkyUI",
+        description: "A complete UI overhaul.",
+        image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1200",
+        download_link: "#"
+      }
     ]
   }
 ];
 
-/* -----------------------
-   END DATA
-   ----------------------- */
+/* ----------------------------------------------------
+   SIDEBAR + GAME LIST
+---------------------------------------------------- */
 
-const sidebarGameList = document.getElementById('gameList');
-const mobileGameList = document.getElementById('mobileGameList');
-const modsGrid = document.getElementById('modsGrid');
-const currentTitle = document.getElementById('currentTitle');
-const modsCount = document.getElementById('modsCount');
-const globalSearch = document.getElementById('globalSearch');
-const yearEl = document.getElementById('year');
-yearEl.textContent = new Date().getFullYear();
+const gameList = document.getElementById("gameList");
+const modsGrid = document.getElementById("modsGrid");
+const title = document.getElementById("title");
+const search = document.getElementById("search");
 
-let activeGameIndex = 0;
+let activeGameIndex = null;
 let activeMods = [];
 
-/* Render game buttons (desktop sidebar) */
-function renderGameList(){
-  sidebarGameList.innerHTML = '';
-  GAMES.forEach((g, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'game-btn' + (idx===activeGameIndex ? ' active' : '');
-    btn.textContent = g.name;
-    btn.onclick = () => selectGame(idx);
-    sidebarGameList.appendChild(btn);
+// Load game buttons
+function loadGames() {
+  gameList.innerHTML = "";
+  GAMES.forEach((game, i) => {
+    const btn = document.createElement("button");
+    btn.className = "game-button";
+    btn.textContent = game.name;
+
+    btn.onclick = () => selectGame(i);
+
+    if (i === activeGameIndex) btn.classList.add("active");
+
+    gameList.appendChild(btn);
   });
 }
+loadGames();
 
-/* Render mobile drawer game list */
-function renderMobileGameList(){
-  mobileGameList.innerHTML = '';
-  GAMES.forEach((g, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'game-btn';
-    btn.style.display = 'block';
-    btn.style.marginBottom = '8px';
-    btn.style.width = '100%';
-    btn.textContent = g.name;
-    btn.onclick = () => {
-      selectGame(idx);
-      closeMobileDrawer();
-    };
-    mobileGameList.appendChild(btn);
-  });
-}
+/* ----------------------------------------------------
+   SELECT GAME + SHOW MODS
+---------------------------------------------------- */
 
-/* Select a game and render its mods */
-function selectGame(index){
-  activeGameIndex = index;
-  const game = GAMES[index];
-  currentTitle.textContent = game.name + " — Mods";
-  activeMods = Array.isArray(game.mods) ? game.mods.slice() : [];
+function selectGame(i) {
+  activeGameIndex = i;
+  activeMods = [...GAMES[i].mods];
+  title.textContent = GAMES[i].name + " Mods";
+  loadGames();
   renderMods(activeMods);
-  renderGameList(); // update active states
-  // update mobile highlight maybe
+
+  closeSidebar();
 }
 
-/* Render mods grid */
-function renderMods(list){
-  modsGrid.innerHTML = '';
-  if(!list.length){
-    modsGrid.innerHTML = '<div style="color:var(--muted)">No mods found.</div>';
-    modsCount.textContent = '0 mods';
-    return;
-  }
-  modsCount.textContent = `${list.length} mod${list.length>1?'s':''}`;
-  list.forEach(m=>{
-    const card = document.createElement('div');
-    card.className = 'mod-card';
+/* ----------------------------------------------------
+   RENDER MODS
+---------------------------------------------------- */
+
+function renderMods(list) {
+  modsGrid.innerHTML = "";
+
+  list.forEach(mod => {
+    const card = document.createElement("div");
+    card.className = "mod-card";
+
     card.innerHTML = `
-      <img class="mod-thumb" src="${m.image||''}" alt="${escapeHtml(m.title)}" onerror="this.style.background='#06070a';this.src='';">
-      <div>
-        <div class="mod-title">${escapeHtml(m.title)}</div>
-        <div class="mod-desc">${escapeHtml(m.desc)}</div>
-      </div>
-      <div class="mod-meta">
-        <div class="game-name">${escapeHtml(GAMES[activeGameIndex].name)}</div>
-        <button class="download-btn" onclick="openDownload('${encodeURIComponent(m.download||'#')}')">Download</button>
-      </div>
+      <img src="${mod.image}" class="mod-thumb">
+      <div class="mod-title">${mod.title}</div>
+      <div class="mod-desc">${mod.description}</div>
+      <div class="game-name">${GAMES[activeGameIndex].name}</div>
+      <button class="download-btn" onclick="window.open('${mod.download_link}', '_blank')">Download</button>
     `;
+
     modsGrid.appendChild(card);
   });
 }
 
-/* Simple search (searches title & desc within the active game's mods) */
-globalSearch.addEventListener('input', (e)=>{
-  const q = (e.target.value||'').trim().toLowerCase();
-  if(!q){
-    renderMods(activeMods);
-    return;
-  }
-  const filtered = activeMods.filter(m=> (m.title||'').toLowerCase().includes(q) || (m.desc||'').toLowerCase().includes(q));
+/* ----------------------------------------------------
+   SEARCH BAR
+---------------------------------------------------- */
+
+search.addEventListener("input", () => {
+  if (activeGameIndex === null) return;
+
+  const value = search.value.toLowerCase();
+
+  const filtered = activeMods.filter(mod =>
+    mod.title.toLowerCase().includes(value)
+  );
+
   renderMods(filtered);
 });
 
-/* Utilities */
-function escapeHtml(s){ return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-function openDownload(urlEncoded){
-  const url = decodeURIComponent(urlEncoded);
-  // open in new tab
-  if(!url || url === '#'){ alert('Download link not provided.'); return; }
-  window.open(url, '_blank', 'noopener');
+/* ----------------------------------------------------
+   MOBILE SIDEBAR CONTROLS
+---------------------------------------------------- */
+
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("active");
 }
 
-/* Mobile drawer behavior */
-const hamburgerBtn = document.getElementById('hamburgerBtn');
-const overlay = document.getElementById('overlay');
-const mobileDrawer = document.getElementById('mobileDrawer');
-const closeMobile = document.getElementById('closeMobile');
-
-function openMobileDrawer(){
-  mobileDrawer.classList.add('open');
-  overlay.classList.add('open');
-  mobileDrawer.setAttribute('aria-hidden','false');
-  overlay.setAttribute('aria-hidden','false');
-  hamburgerBtn.setAttribute('aria-expanded','true');
-}
-function closeMobileDrawer(){
-  mobileDrawer.classList.remove('open');
-  overlay.classList.remove('open');
-  mobileDrawer.setAttribute('aria-hidden','true');
-  overlay.setAttribute('aria-hidden','true');
-  hamburgerBtn.setAttribute('aria-expanded','false');
+function closeSidebar() {
+  document.getElementById("sidebar").classList.remove("active");
 }
 
-hamburgerBtn.addEventListener('click', openMobileDrawer);
-closeMobile.addEventListener('click', closeMobileDrawer);
-overlay.addEventListener('click', closeMobileDrawer);
-window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeMobileDrawer(); });
-
-/* Init */
-renderGameList();
-renderMobileGameList();
-selectGame(0);
-
-/* Optional: keyboard "/" to focus search (nice UX) */
-window.addEventListener('keydown',(e)=>{
-  if(e.key === '/' && document.activeElement !== globalSearch){
-    e.preventDefault();
-    globalSearch.focus();
-  }
-});
-
-/* Make it easy to update mods externally: provide a global helper to reload data
-   Example usage in console:
-     GAMES.push({name:'NewGame', mods:[...]}); renderGameList(); renderMobileGameList();
-*/
-window.ModVault = {
-  GAMES,
-  renderGameList,
-  renderMobileGameList,
-  selectGame,
-  renderMods
-};
 </script>
 
 </body>
