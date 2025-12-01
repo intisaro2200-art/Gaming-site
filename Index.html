@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ModVault – Game Mods Hub</title>
+  <meta name="description" content="ModVault – Discover, download, and manage game mods for your favorite titles.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#1e293b;--bg2:#0f172a;
+      --accent1:#3b82f6;--accent2:#6366f1;
+      --surface:#1e1e1e;--surface2:#111;
+      --muted:#9ca3af;--text:#e5e7eb;
+      --radius-lg:24px;--radius-md:12px;--maxw:1200px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+      font-family:Inter,system-ui; color:var(--text);
+    }
+
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(0,0,0,0.45);backdrop-filter:blur(6px);
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    nav{
+      max-width:var(--maxw);margin:auto;padding:14px 20px;
+      display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;align-items:center;gap:10px;
+      text-decoration:none;color:var(--text)
+    }
+
+    .logo{
+      width:42px;height:42px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:grid;place-items:center;
+      font-weight:900;font-size:20px;
+    }
+
+    .search-box{
+      flex:1;min-width:260px;position:relative;
+    }
+
+    .search-box input{
+      width:100%;padding:12px 48px;border-radius:999px;
+      background:#0f0f0f;border:1px solid #222;color:var(--text);
+    }
+
+    .sidebar{
+      position:fixed;top:70px;left:20px;width:240px;
+      background:#0f0f0f;border-radius:16px;padding:20px;
+      border:1px solid #222; height:80vh;overflow:auto;
+    }
+
+    main{
+      max-width:var(--maxw);margin:20px auto;padding:20px;
+      margin-left:280px
+    }
+
+    .mod-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:20px
+    }
+
+    .mod-card{
+      background:#0f0f0f;padding:14px;
+      border-radius:16px;border:1px solid #222;
+      display:flex;flex-direction:column;gap:10px;
+    }
+
+    .mod-card img{
+      width:100%;height:150px;object-fit:cover;border-radius:12px
+    }
+
+    .btn{
+      padding:8px 14px;border-radius:8px;
+      background:#222;color:white;border:none;cursor:pointer
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+    }
+
+    .section-title{
+      font-size:24px;font-weight:800;margin-bottom:10px
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a class="brand" href="#"><div class="logo">MV</div><h1>ModVault</h1></a>
+    <div class="search-box"><input id="searchBar" placeholder="Search mods…"></div>
+    <button class="btn-primary btn">Upload Mod</button>
+  </nav>
+</header>
+
+<aside class="sidebar" id="gameList"></aside>
+
+<main>
+  <h2 class="section-title">Featured Mods</h2>
+  <div id="modsGrid" class="mod-grid"></div>
+</main>
+
+<script>
+const mods=[
+ {id:'m1',title:'Ultra Graphics Overhaul',game:'GTA V',image:'https://raw.githubusercontent.com/appliink/assets/main/gfx1.jpg',desc:'Enhances visuals with 4K textures.',download:'https://example.com'},
+ {id:'m2',title:'Realistic Physics Engine',game:'Minecraft',image:'https://raw.githubusercontent.com/appliink/assets/main/mc2.jpg',desc:'Adds realistic movement and gravity.',download:'https://example.com'},
+ {id:'m3',title:'Modern UI Revamp',game:'Skyrim',image:'https://raw.githubusercontent.com/appliink/assets/main/sk1.jpg',desc:'Complete UI redesign.',download:'https://example.com'}
+];
+
+const games=[...new Set(mods.map(m=>m.game))];
+const gameList=document.getElementById('gameList');
+const modsGrid=document.getElementById('modsGrid');
+const searchBar=document.getElementById('searchBar');
+
+gameList.innerHTML='<h3 style="margin-bottom:10px">Games</h3>'+games.map(g=>`<button class="btn" onclick="filterGame('${g}')">${g}</button>`).join('');
+
+function render(list){
+ modsGrid.innerHTML=list.map(m=>`
+  <div class="mod-card">
+   <img src="${m.image}">
+   <h3>${m.title}</h3>
+   <p>${m.desc}</p>
+   <p style="color:#888">${m.game}</p>
+   <button class="btn-primary btn" onclick="window.open('${m.download}')">Download</button>
+  </div>`).join('');
+}
+
+function filterGame(g){
+  render(mods.filter(m=>m.game===g));
+}
+
+render(mods);
+
+searchBar.addEventListener('input',e=>{
+ const q=e.target.value.toLowerCase();
+ render(mods.filter(m=>m.title.toLowerCase().includes(q)||m.game.toLowerCase().includes(q)));
+});
+</script>
+
+</body>
+</html>
