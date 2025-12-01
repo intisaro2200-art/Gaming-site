@@ -1,384 +1,333 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ModVault – Game Mods</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ModVault — Game Mods Feed</title>
+  <meta name="description" content="ModVault – Discover and download mods for your favorite games.">
+  <style>
+    :root{
+      --bg1:#071129; --bg2:#0f1724;
+      --card:#0b0d10; --muted:#9aa4b2; --accent1:#3b82f6; --accent2:#7c3aed;
+      --glass: rgba(255,255,255,0.03);
+      --maxw:1200px;
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#e6eef8;background:linear-gradient(180deg,var(--bg1),var(--bg2));-webkit-font-smoothing:antialiased}
+    a{color:inherit}
+    button{font:inherit;cursor:pointer}
 
-<style>
-/* ========== ROOT COLORS ========== */
-:root {
-  --bg: #1c1c1c;
-  --sidebar: #111;
-  --card: #242424;
-  --text: #fff;
-  --muted: #bbb;
-  --blue: #0d6efd;
-  --blue-hover: #0b5cd6;
-}
+    /* Topbar */
+    header.topbar{
+      position:sticky;top:0;z-index:60;padding:10px 12px;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(2,6,23,0.5), rgba(2,6,23,0.55));
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .topbar-inner{max-width:var(--maxw);margin:0 auto;display:flex;gap:12px;align-items:center;padding:6px 8px}
+    .brand{display:flex;gap:10px;align-items:center}
+    .logo{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent1),var(--accent2));font-weight:800}
+    .title{font-weight:800;font-size:18px}
 
-/* ========== GLOBAL ========== */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  display: flex;
-  min-height: 100vh;
-}
+    .search {flex:1;position:relative;min-width:120px}
+    .search input{width:100%;padding:10px 14px 10px 40px;border-radius:999px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:var(--muted)}
+    .search .icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
 
-/* ========== SIDEBAR ========== */
-.sidebar {
-  width: 240px;
-  background: var(--sidebar);
-  padding: 20px;
-  box-sizing: border-box;
-  position: fixed;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  overflow-y: auto;
-  transition: transform 0.3s ease;
-}
+    .actions{display:flex;gap:8px;align-items:center}
+    .upload-btn{padding:8px 12px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));border:none;color:#fff;font-weight:700}
 
-.sidebar h2 {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
+    /* Layout */
+    .wrap{max-width:var(--maxw);margin:18px auto;padding:0 12px;display:grid;grid-template-columns:280px 1fr;gap:20px}
+    /* Sidebar desktop */
+    .sidebar{background:var(--card);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);height:calc(100vh - 140px);overflow:auto}
+    .sidebar h3{margin:0 0 10px 0}
+    .game-btn{display:block;width:100%;text-align:left;padding:10px;border-radius:10px;border:none;background:transparent;color:var(--muted);margin-bottom:8px}
+    .game-btn.active{background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));color:#fff;font-weight:600}
 
-.game-button {
-  width: 100%;
-  background: #222;
-  color: #fff;
-  padding: 12px;
-  text-align: left;
-  border: none;
-  border-radius: 6px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  font-size: 15px;
-}
-.game-button:hover {
-  background: #333;
-}
-.game-button.active {
-  background: var(--blue);
-}
+    /* Feed (app style) */
+    .feed {
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:18px;
+      align-content:start;
+    }
 
-/* ========== MOBILE HAMBURGER ========== */
-.hamburger {
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  width: 35px;
-  height: 35px;
-  background: #00000070;
-  border-radius: 6px;
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  padding: 6px;
-  cursor: pointer;
-  z-index: 9999;
-}
-.hamburger div {
-  width: 100%;
-  height: 4px;
-  background: white;
-  margin: 3px 0;
-  border-radius: 3px;
-}
+    /* Card style: big image + overlay info */
+    .card {
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      border-radius:16px;overflow:hidden;display:flex;flex-direction:column;
+      box-shadow: 0 6px 24px rgba(2,6,23,0.45);
+    }
+    .card .thumb {width:100%;height:360px;object-fit:cover;background:#06070a;display:block}
+    .card .content {padding:14px;display:flex;flex-direction:column;gap:8px}
+    .meta {display:flex;gap:8px;align-items:center;justify-content:space-between}
+    .game-name{color:var(--muted);font-size:13px}
+    .card-title{font-size:20px;font-weight:800;margin:0}
+    .card-desc{color:var(--muted);margin:0;font-size:14px;line-height:1.35}
+    .card-actions{display:flex;gap:8px;align-items:center;margin-top:8px}
+    .download{margin-left:auto;padding:10px 14px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:white;font-weight:700}
 
-/* Sidebar hidden on mobile until opened */
-.sidebar.hidden {
-  transform: translateX(-260px);
-}
+    /* small screens: single-column feed, bigger header icons */
+    @media (max-width:900px){
+      .wrap{grid-template-columns:1fr;padding:0 12px;margin-left:0}
+      .sidebar{display:none}
+      .hamburger{display:inline-flex}
+    }
+    @media (min-width:901px){
+      .feed{grid-template-columns:repeat(2,1fr)}
+      .card .thumb{height:300px}
+    }
+    @media (min-width:1300px){
+      .feed{grid-template-columns:repeat(3,1fr)}
+      .card .thumb{height:260px}
+    }
 
-/* ========== MAIN CONTENT ========== */
-.main {
-  margin-left: 260px;
-  padding: 20px;
-  flex: 1;
-}
+    /* Mobile drawer */
+    .hamburger{display:none;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted);cursor:pointer}
+    .overlay{display:none;position:fixed;inset:0;background:rgba(2,6,23,0.55);z-index:60;opacity:0;pointer-events:none;transition:opacity .15s}
+    .overlay.open{display:block;opacity:1;pointer-events:auto}
+    .drawer{position:fixed;left:-320px;top:0;bottom:0;width:300px;background:var(--card);z-index:70;padding:16px;border-right:1px solid rgba(255,255,255,0.02);transition:left .22s}
+    .drawer.open{left:0}
 
-h1 {
-  margin-top: 0;
-}
-
-/* Search bar */
-#search {
-  width: 100%;
-  background: #222;
-  border: none;
-  padding: 12px;
-  color: white;
-  border-radius: 6px;
-  margin-bottom: 20px;
-}
-
-/* ========== MOD GRID ========== */
-.mods-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-.mod-card {
-  background: var(--card);
-  border-radius: 10px;
-  overflow: hidden;
-  padding-bottom: 10px;
-}
-
-.mod-thumb {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-}
-
-.mod-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 10px;
-}
-
-.mod-desc {
-  color: var(--muted);
-  margin: 0 10px 10px 10px;
-}
-
-.game-name {
-  color: var(--blue);
-  font-size: 14px;
-  margin: 0 10px;
-}
-
-/* Download button */
-.download-btn {
-  width: calc(100% - 20px);
-  margin: 10px;
-  padding: 10px;
-  border: none;
-  background: var(--blue);
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.download-btn:hover {
-  background: var(--blue-hover);
-}
-
-/* ========== RESPONSIVE ========== */
-@media (max-width: 900px) {
-  .main {
-    margin-left: 0;
-  }
-  .hamburger {
-    display: flex;
-  }
-  .sidebar {
-    transform: translateX(-260px);
-  }
-  .sidebar.active {
-    transform: translateX(0);
-  }
-}
-</style>
+    footer{max-width:var(--maxw);margin:26px auto;padding:18px;color:var(--muted);font-size:13px}
+  </style>
 </head>
-
 <body>
 
-<!-- HAMBURGER MENU (MOBILE) -->
-<div class="hamburger" onclick="toggleSidebar()">
-  <div></div>
-  <div></div>
-  <div></div>
-</div>
+  <header class="topbar" role="banner">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo">MV</div>
+        <div class="title">ModVault</div>
+      </div>
 
-<!-- SIDEBAR -->
-<div class="sidebar hidden" id="sidebar">
-  <h2>Games</h2>
-  <div id="gameList"></div>
-</div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">☰</button>
 
-<!-- MAIN CONTENT -->
-<div class="main">
-  <h1 id="title">Select a Game</h1>
-  <input type="text" id="search" placeholder="Search mods...">
+      <div class="search" style="flex:1">
+        <span class="icon">🔎</span>
+        <input id="searchInput" placeholder="Search mods or games…" aria-label="Search mods">
+      </div>
 
-  <div class="mods-grid" id="modsGrid"></div>
-</div>
+      <div class="actions">
+        <button class="upload-btn">Upload Mod</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile drawer + overlay -->
+  <div id="overlay" class="overlay" aria-hidden="true"></div>
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <strong style="font-size:16px">Games</strong>
+      <button id="closeDrawer" style="background:transparent;border:none;color:var(--muted);font-size:18px">✕</button>
+    </div>
+    <div id="mobileGameList"></div>
+  </aside>
+
+  <div class="wrap" role="main">
+    <!-- desktop sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <h3>Games</h3>
+      <div id="gameList"></div>
+      <hr style="border:none;height:1px;background:rgba(255,255,255,0.02);margin:12px 0">
+      <div style="color:var(--muted);font-size:13px">Tip: edit the <code>GAMES</code> array in the script to add games or mods.</div>
+    </aside>
+
+    <!-- feed -->
+    <section class="feed" id="feed">
+      <!-- cards injected here -->
+    </section>
+  </div>
+
+  <footer>© <span id="year"></span> ModVault — App style feed</footer>
 
 <script>
-
-/* ----------------------------------------------------
-   GAMES DATA (EASY TO EDIT — JUST LIKE PRODUCTS)
----------------------------------------------------- */
-
+/* ==========================
+   GAMES DATA (EDIT THIS BLOCK)
+   - Keep format: id, name, category, image (optional), mods[]
+   - Each mod: id, title, description, image, download_link
+   - Example:
+     {
+       id: 'g1',
+       name: 'GTA V',
+       category: 'Open World',
+       image: 'https://...',
+       mods: [{ id:'m1', title:'X', description:'..', image:'..', download_link:'https://...' }]
+     }
+   ========================== */
 const GAMES = [
   {
-    id: "g1",
-    name: "GTA V",
-    category: "Open World",
-    image: "",
+    id: 'g1',
+    name: 'GTA V',
+    category: 'Open World',
+    image: '',
     mods: [
-      {
-        id: "gta1",
-        title: "Ultra Graphics Overhaul",
-        description: "4K textures + advanced lighting.",
-        image: "https://images.unsplash.com/photo-1542751371-29b0f74f9713?w=1200",
-        download_link: "#"
-      },
-      {
-        id: "gta2",
-        title: "LSPDFR",
-        description: "Become a police officer in GTA V.",
-        image: "https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?w=1200",
-        download_link: "#"
-      }
+      { id:'gta-m1', title:'Ultra Graphics Overhaul', description:'4K textures and better lighting for GTA V.', image:'https://images.unsplash.com/photo-1542751371-29b0f74f9713?w=1200&q=60', download_link:'#' },
+      { id:'gta-m2', title:'Real Physics Tweaks', description:'Improved vehicle physics and handling.', image:'https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?w=1200&q=60', download_link:'#' }
     ]
   },
-
   {
-    id: "g2",
-    name: "Minecraft",
-    category: "Sandbox",
+    id: 'g2',
+    name: 'Minecraft',
+    category: 'Sandbox',
+    image: '',
     mods: [
-      {
-        id: "mc1",
-        title: "Ultra Shaders",
-        description: "Beautiful lighting + shadows.",
-        image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200",
-        download_link: "#"
-      },
-      {
-        id: "mc2",
-        title: "Physics Mod",
-        description: "Objects break and fall realistically.",
-        image: "https://images.unsplash.com/photo-1545511343-d8b5d2f53b5b?w=1200",
-        download_link: "#"
-      }
+      { id:'mc-m1', title:'Ultra Shaders Pack', description:'Beautiful lighting, shadows, and reflections (OptiFine recommended).', image:'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=60', download_link:'#' },
+      { id:'mc-m2', title:'Realistic Physics Engine', description:'Adds realistic physics to blocks and entities.', image:'https://images.unsplash.com/photo-1545511343-d8b5d2f53b5b?w=1200&q=60', download_link:'#' }
     ]
   },
-
   {
-    id: "g3",
-    name: "Skyrim",
-    category: "RPG",
+    id: 'g3',
+    name: 'Skyrim',
+    category: 'RPG',
+    image: '',
     mods: [
-      {
-        id: "sk1",
-        title: "ENB Lighting Pack",
-        description: "Next-level realistic lighting.",
-        image: "https://images.unsplash.com/photo-1519340243566-3d6cc8d25539?w=1200",
-        download_link: "#"
-      },
-      {
-        id: "sk2",
-        title: "SkyUI",
-        description: "A complete UI overhaul.",
-        image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1200",
-        download_link: "#"
-      }
+      { id:'sk-m1', title:'ENB Lighting Pack', description:'Advanced lighting & color grading for immersive visuals.', image:'https://images.unsplash.com/photo-1519340243566-3d6cc8d25539?w=1200&q=60', download_link:'#' },
+      { id:'sk-m2', title:'Modern UI Revamp', description:'Cleaner menus and inventory UX improvements.', image:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=1200&q=60', download_link:'#' }
     ]
   }
 ];
+/* ==========================
+   END DATA
+   ========================== */
 
-/* ----------------------------------------------------
-   SIDEBAR + GAME LIST
----------------------------------------------------- */
+/* --- Helpers & UI elements --- */
+const feed = document.getElementById('feed');
+const gameList = document.getElementById('gameList');
+const mobileGameList = document.getElementById('mobileGameList');
+const searchInput = document.getElementById('searchInput');
+const yearEl = document.getElementById('year');
+yearEl.textContent = new Date().getFullYear();
 
-const gameList = document.getElementById("gameList");
-const modsGrid = document.getElementById("modsGrid");
-const title = document.getElementById("title");
-const search = document.getElementById("search");
-
-let activeGameIndex = null;
-let activeMods = [];
-
-// Load game buttons
-function loadGames() {
-  gameList.innerHTML = "";
-  GAMES.forEach((game, i) => {
-    const btn = document.createElement("button");
-    btn.className = "game-button";
-    btn.textContent = game.name;
-
-    btn.onclick = () => selectGame(i);
-
-    if (i === activeGameIndex) btn.classList.add("active");
-
-    gameList.appendChild(btn);
+let allMods = []; // flattened list (all games)
+// flatten mods into a single array with reference to game
+function buildAllMods(){
+  allMods = [];
+  GAMES.forEach(g=>{
+    (g.mods||[]).forEach(m=>{
+      allMods.push(Object.assign({}, m, {__gameId: g.id, __gameName: g.name}));
+    });
   });
 }
-loadGames();
 
-/* ----------------------------------------------------
-   SELECT GAME + SHOW MODS
----------------------------------------------------- */
-
-function selectGame(i) {
-  activeGameIndex = i;
-  activeMods = [...GAMES[i].mods];
-  title.textContent = GAMES[i].name + " Mods";
-  loadGames();
-  renderMods(activeMods);
-
-  closeSidebar();
-}
-
-/* ----------------------------------------------------
-   RENDER MODS
----------------------------------------------------- */
-
-function renderMods(list) {
-  modsGrid.innerHTML = "";
-
-  list.forEach(mod => {
-    const card = document.createElement("div");
-    card.className = "mod-card";
-
+/* Render feed: app-style cards for each mod */
+function renderFeed(list){
+  feed.innerHTML = '';
+  if(!list.length){
+    feed.innerHTML = `<div style="color:var(--muted);padding:16px">No mods found.</div>`;
+    return;
+  }
+  list.forEach(mod=>{
+    const card = document.createElement('article');
+    card.className = 'card';
     card.innerHTML = `
-      <img src="${mod.image}" class="mod-thumb">
-      <div class="mod-title">${mod.title}</div>
-      <div class="mod-desc">${mod.description}</div>
-      <div class="game-name">${GAMES[activeGameIndex].name}</div>
-      <button class="download-btn" onclick="window.open('${mod.download_link}', '_blank')">Download</button>
+      <img class="thumb" src="${mod.image||''}" alt="${escapeHtml(mod.title)}" onerror="this.style.background='#06070a';this.src='';">
+      <div class="content">
+        <div class="meta">
+          <div>
+            <div class="card-title">${escapeHtml(mod.title)}</div>
+            <div class="game-name">${escapeHtml(mod.__gameName)}</div>
+          </div>
+          <div style="color:var(--muted);font-size:13px">${mod.id}</div>
+        </div>
+        <p class="card-desc">${escapeHtml(mod.description)}</p>
+        <div class="card-actions">
+          <button class="download" onclick="openDownload('${encodeURIComponent(mod.download_link||'#')}')">Download</button>
+        </div>
+      </div>
     `;
-
-    modsGrid.appendChild(card);
+    feed.appendChild(card);
   });
 }
 
-/* ----------------------------------------------------
-   SEARCH BAR
----------------------------------------------------- */
+/* Render game list (sidebar & mobile) */
+function renderGames(){
+  gameList.innerHTML = '';
+  mobileGameList.innerHTML = '';
+  GAMES.forEach((g, idx)=>{
+    const b = document.createElement('button');
+    b.className = 'game-btn';
+    b.textContent = g.name;
+    b.onclick = ()=> filterByGame(g.id);
+    gameList.appendChild(b);
 
-search.addEventListener("input", () => {
-  if (activeGameIndex === null) return;
+    const mb = b.cloneNode(true);
+    mb.onclick = ()=> { filterByGame(g.id); closeDrawer(); };
+    mobileGameList.appendChild(mb);
+  });
 
-  const value = search.value.toLowerCase();
+  // add "All Mods" button at top
+  const allBtn = document.createElement('button');
+  allBtn.className = 'game-btn active';
+  allBtn.textContent = 'All Mods';
+  allBtn.onclick = ()=> { searchInput.value=''; renderFeed(allMods); highlightActive(null); };
+  gameList.prepend(allBtn);
+  const mbAll = allBtn.cloneNode(true);
+  mbAll.onclick = ()=> { searchInput.value=''; renderFeed(allMods); closeDrawer(); highlightActive(null); };
+  mobileGameList.prepend(mbAll);
+}
 
-  const filtered = activeMods.filter(mod =>
-    mod.title.toLowerCase().includes(value)
-  );
+/* highlight active game in sidebar (simple) */
+function highlightActive(gameId){
+  Array.from(document.querySelectorAll('.game-btn')).forEach(btn=>{
+    if(btn.textContent === 'All Mods'){ btn.classList.toggle('active', gameId===null); return; }
+    btn.classList.toggle('active', btn.textContent && gameId && btn.textContent === (GAMES.find(g=>g.id===gameId)||{}).name );
+  });
+}
 
-  renderMods(filtered);
+/* filter feed by game id */
+function filterByGame(gameId){
+  const filtered = allMods.filter(m=> m.__gameId === gameId);
+  renderFeed(filtered);
+  highlightActive(gameId);
+}
+
+/* search across all mods (title + desc + game name) */
+searchInput.addEventListener('input', (e)=>{
+  const q = (e.target.value||'').trim().toLowerCase();
+  if(!q) { renderFeed(allMods); highlightActive(null); return; }
+  const filtered = allMods.filter(m=>{
+    return (m.title||'').toLowerCase().includes(q) || (m.description||'').toLowerCase().includes(q) || (m.__gameName||'').toLowerCase().includes(q);
+  });
+  renderFeed(filtered);
+  highlightActive(null);
 });
 
-/* ----------------------------------------------------
-   MOBILE SIDEBAR CONTROLS
----------------------------------------------------- */
-
-function toggleSidebar() {
-  document.getElementById("sidebar").classList.toggle("active");
+/* download helper */
+function openDownload(enc){
+  const url = decodeURIComponent(enc);
+  if(!url || url === '#'){ alert('Download link not provided.'); return; }
+  window.open(url, '_blank', 'noopener');
 }
 
-function closeSidebar() {
-  document.getElementById("sidebar").classList.remove("active");
-}
+/* simple safe escape */
+function escapeHtml(s){ return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+/* Mobile drawer controls */
+const hamburger = document.getElementById('hamburger');
+const overlay = document.getElementById('overlay');
+const drawer = document.getElementById('drawer');
+const closeDrawerBtn = document.getElementById('closeDrawer');
+
+function openDrawer(){ drawer.classList.add('open'); overlay.classList.add('open'); drawer.setAttribute('aria-hidden','false'); overlay.setAttribute('aria-hidden','false'); }
+function closeDrawer(){ drawer.classList.remove('open'); overlay.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); overlay.setAttribute('aria-hidden','true'); }
+
+hamburger.addEventListener('click', openDrawer);
+closeDrawerBtn.addEventListener('click', closeDrawer);
+overlay.addEventListener('click', closeDrawer);
+window.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDrawer(); });
+
+/* init */
+buildAllMods();
+renderGames();
+renderFeed(allMods);
+highlightActive(null);
+
+/* export for console convenience (optional) */
+window.ModVault = { GAMES, rebuild:()=>{ buildAllMods(); renderGames(); renderFeed(allMods);} };
 
 </script>
-
 </body>
 </html>
