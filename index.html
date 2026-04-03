@@ -111,8 +111,8 @@ header{
   border-color:rgba(59,130,246,0.3);transform:translateY(-2px);
   box-shadow:0 12px 40px rgba(59,130,246,0.08);
 }
-.card-img-wrap{position:relative;overflow:hidden;height:180px}
-.card-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.card-img-wrap{position:relative;overflow:hidden;height:200px;flex-shrink:0}
+.card-img-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .3s}
 .card:hover .card-img-wrap img{transform:scale(1.06)}
 .card-tag{
   position:absolute;bottom:8px;left:8px;
@@ -168,7 +168,7 @@ header{
   .sidebar{display:none}
   .ham-btn{display:flex}
   .card{grid-template-columns:1fr}
-  .card-img-wrap{height:200px}
+  .card-img-wrap{height:220px}
   .search-wrap{max-width:none}
 }
 @media(max-width:480px){
