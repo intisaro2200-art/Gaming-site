@@ -3,399 +3,811 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ModVault — Free Game Mods</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700;900&display=swap" rel="stylesheet">
+<title>ModVault — Free Game Mods 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Exo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════ */
 :root{
-  --bg:#080b12;
-  --surface:#0f1219;
-  --card:#111520;
+  --bg:#07080d;
+  --surface:#0d0f18;
+  --card:#0e1119;
   --border:rgba(255,255,255,0.06);
-  --accent:#3b82f6;
-  --accent2:#7c3aed;
-  --text:#f1f5f9;
-  --muted:#64748b;
-  --maxw:1100px;
+  --gold:#f59e0b;
+  --gold2:#fbbf24;
+  --green:#22c55e;
+  --text:#f0f4ff;
+  --muted:#4a5270;
+  --maxw:1160px;
+  --header-h:62px;
+  --pills-h:56px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 body{
-  font-family:'Barlow',system-ui,sans-serif;
+  font-family:'Exo 2',system-ui,sans-serif;
   background:var(--bg);color:var(--text);
   min-height:100vh;overflow-x:hidden;
 }
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;
+
+/* ─── ANIMATED BACKGROUND BLOBS ─── */
+.bg-blobs{
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+}
+.blob{
+  position:absolute;border-radius:50%;filter:blur(90px);opacity:.12;
+  animation:blobFloat 14s ease-in-out infinite alternate;
+}
+.blob-1{width:500px;height:500px;background:#f59e0b;top:-120px;left:-100px;animation-duration:16s}
+.blob-2{width:400px;height:400px;background:#6366f1;top:30%;right:-80px;animation-duration:20s;animation-delay:-5s}
+.blob-3{width:350px;height:350px;background:#ec4899;bottom:-60px;left:30%;animation-duration:18s;animation-delay:-9s}
+.blob-4{width:280px;height:280px;background:#22c55e;top:55%;left:10%;animation-duration:22s;animation-delay:-3s;opacity:.07}
+@keyframes blobFloat{
+  0%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(30px,-40px) scale(1.06)}
+  66%{transform:translate(-20px,30px) scale(0.94)}
+  100%{transform:translate(40px,20px) scale(1.04)}
+}
+
+/* GRID OVERLAY */
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:
-    linear-gradient(rgba(59,130,246,0.03) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(59,130,246,0.03) 1px,transparent 1px);
-  background-size:40px 40px;pointer-events:none;
+    linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+  background-size:50px 50px;
 }
 
-/* HEADER */
+/* ─── HEADER ─── */
 header{
-  position:sticky;top:0;z-index:50;
-  background:rgba(8,11,18,0.92);
-  backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--border);
-  padding:12px 16px;
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:var(--header-h);
+  background:rgba(7,8,13,0.88);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(245,158,11,0.12);
 }
-.top{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;gap:12px}
+.top{
+  max-width:var(--maxw);margin:0 auto;height:100%;
+  display:flex;align-items:center;gap:16px;padding:0 20px;
+}
 .logo{
-  font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text;color:transparent;flex-shrink:0;
+  font-family:'Russo One',sans-serif;font-size:22px;letter-spacing:4px;
+  color:var(--gold);flex-shrink:0;
+  text-shadow:0 0 24px rgba(245,158,11,0.5);
+  position:relative;
 }
-.search-wrap{flex:1;position:relative;max-width:500px}
+.logo sup{
+  font-size:8px;letter-spacing:2px;color:var(--muted);
+  position:absolute;top:3px;right:-28px;text-transform:uppercase;
+}
+.search-wrap{flex:1;position:relative;max-width:440px}
+.search-icon-svg{
+  position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  color:var(--muted);width:15px;height:15px;pointer-events:none;
+}
 .search-wrap input{
-  width:100%;padding:10px 16px 10px 42px;border-radius:999px;
-  background:var(--surface);border:1px solid var(--border);
-  color:var(--text);font-family:'Barlow',sans-serif;font-size:14px;outline:none;
-  transition:border-color .18s;
+  width:100%;padding:9px 16px 9px 42px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;
+  color:var(--text);font-family:'Exo 2',sans-serif;font-size:14px;font-weight:600;
+  outline:none;transition:border-color .2s,box-shadow .2s;
 }
-.search-wrap input::placeholder{color:var(--muted)}
-.search-wrap input:focus{border-color:var(--accent)}
-.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px}
+.search-wrap input::placeholder{color:var(--muted);font-weight:400}
+.search-wrap input:focus{
+  border-color:rgba(245,158,11,0.4);
+  box-shadow:0 0 0 3px rgba(245,158,11,0.06);
+}
 .ham-btn{
-  display:none;width:40px;height:40px;border-radius:10px;
-  background:var(--surface);border:1px solid var(--border);
-  color:var(--text);font-size:18px;cursor:pointer;
+  display:none;width:38px;height:38px;border-radius:8px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  color:var(--gold);font-size:18px;cursor:pointer;
   align-items:center;justify-content:center;flex-shrink:0;
+  transition:background .15s;
 }
+.ham-btn:hover{background:rgba(245,158,11,0.08)}
 
-/* LAYOUT */
-.wrap{
-  max-width:var(--maxw);margin:24px auto;
-  padding:0 16px 60px;
-  display:grid;grid-template-columns:220px 1fr;gap:20px;
+/* ─── STICKY FILTER PILLS ─── */
+.pills-bar{
+  position:fixed;top:var(--header-h);left:0;right:0;z-index:190;
+  height:var(--pills-h);
+  background:rgba(7,8,13,0.82);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  display:flex;align-items:center;
+}
+.pills-inner{
+  max-width:var(--maxw);margin:0 auto;width:100%;
+  padding:0 20px;display:flex;gap:8px;align-items:center;
+  overflow-x:auto;scrollbar-width:none;
+}
+.pills-inner::-webkit-scrollbar{display:none}
+.pill{
+  flex-shrink:0;padding:7px 16px;border-radius:999px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  color:var(--muted);font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:7px;
+  white-space:nowrap;
+}
+.pill:hover{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2);color:var(--text)}
+.pill.active{
+  background:rgba(245,158,11,0.14);border-color:rgba(245,158,11,0.45);
+  color:var(--gold);
+  box-shadow:0 0 18px rgba(245,158,11,0.1);
+}
+.pill .pill-count{
+  font-size:10px;font-weight:800;
+  background:rgba(255,255,255,0.08);
+  padding:2px 7px;border-radius:999px;
+  color:var(--muted);
+}
+.pill.active .pill-count{
+  background:rgba(245,158,11,0.2);color:var(--gold);
+}
+.pill-icon{font-size:15px;line-height:1}
+
+/* ─── PAGE BODY OFFSET ─── */
+.page-body{
+  padding-top:calc(var(--header-h) + var(--pills-h));
   position:relative;z-index:1;
 }
 
-/* SIDEBAR */
-.sidebar{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:14px;padding:14px;
-  height:fit-content;position:sticky;top:80px;
+/* ─── HERO ─── */
+.hero{
+  max-width:var(--maxw);margin:0 auto;
+  padding:52px 20px 36px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:40px;align-items:center;
 }
-.sidebar-title{
-  font-size:11px;font-weight:700;letter-spacing:2px;
-  text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding:0 4px;
+.hero-eyebrow{
+  font-family:'Exo 2',sans-serif;font-size:11px;font-weight:800;
+  letter-spacing:4px;text-transform:uppercase;color:var(--gold);
+  display:flex;align-items:center;gap:8px;margin-bottom:18px;
 }
-.game-btn{
-  width:100%;text-align:left;padding:9px 12px;border-radius:9px;
-  border:none;background:none;color:var(--muted);
-  font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;
-  cursor:pointer;margin-bottom:4px;transition:all .15s;
-  display:flex;align-items:center;gap:8px;
+.hero-eyebrow::before{
+  content:'';width:28px;height:2px;background:var(--gold);
+  display:inline-block;border-radius:2px;
 }
-.game-btn:hover{background:rgba(255,255,255,0.04);color:var(--text)}
-.game-btn.active{background:rgba(59,130,246,0.12);color:var(--accent)}
-.game-btn .dot{
-  width:6px;height:6px;border-radius:50%;background:var(--accent);
-  opacity:0;transition:opacity .15s;flex-shrink:0;
+.hero-h1{
+  font-family:'Russo One',sans-serif;font-size:52px;line-height:1;
+  letter-spacing:1px;color:#fff;
 }
-.game-btn.active .dot{opacity:1}
+.hero-h1 .gold{
+  color:var(--gold);display:block;
+  text-shadow:0 0 40px rgba(245,158,11,0.3);
+}
+.hero-sub{
+  margin-top:16px;font-size:16px;color:var(--muted);
+  line-height:1.65;font-weight:600;max-width:420px;
+}
+.hero-stats{
+  display:flex;gap:24px;margin-top:32px;flex-wrap:wrap;align-items:center;
+}
+.stat{display:flex;flex-direction:column;gap:2px}
+.stat-num{
+  font-family:'Russo One',sans-serif;font-size:28px;color:var(--gold);
+  line-height:1;text-shadow:0 0 20px rgba(245,158,11,0.3);
+}
+.stat-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.hero-divider{width:1px;height:40px;background:rgba(255,255,255,0.08)}
 
-/* FEED */
-.feed{display:grid;gap:16px}
-.results-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.results-bar h2{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px}
-.results-count{font-size:13px;color:var(--muted)}
+.hero-right{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+}
+.hero-tile{
+  border-radius:12px;overflow:hidden;position:relative;
+  aspect-ratio:1/1;background:#0d0f18;border:1px solid rgba(255,255,255,0.06);
+  cursor:pointer;transition:transform .2s,box-shadow .2s;
+}
+.hero-tile.wide{grid-column:span 2;aspect-ratio:2/1}
+.hero-tile:hover{transform:scale(1.02);box-shadow:0 12px 40px rgba(0,0,0,0.5)}
+.hero-tile img{
+  width:100%;height:100%;object-fit:cover;object-position:center top;
+  transition:transform .35s;
+}
+.hero-tile:hover img{transform:scale(1.06)}
+.hero-tile-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(7,8,13,0.9) 0%,transparent 60%);
+}
+.hero-tile-label{
+  position:absolute;bottom:12px;left:12px;right:12px;
+  font-family:'Russo One',sans-serif;font-size:13px;letter-spacing:.5px;color:#fff;
+}
+.hero-tile-tag{
+  font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);display:block;margin-bottom:3px;
+}
 
-/* CARD */
+/* ─── MAIN SECTION ─── */
+.main{
+  max-width:var(--maxw);margin:0 auto;
+  padding:0 20px 80px;
+}
+.section-bar{
+  display:flex;align-items:baseline;gap:16px;margin-bottom:22px;
+  border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:16px;
+}
+.section-title{
+  font-family:'Russo One',sans-serif;font-size:20px;letter-spacing:2px;
+  color:#fff;
+}
+.section-count{
+  font-size:12px;font-weight:700;letter-spacing:1px;color:var(--muted);
+}
+
+/* ─── CARD GRID ─── */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:18px;
+}
+
+/* ─── CARD ─── */
 .card{
-  background:var(--card);border:1px solid var(--border);border-radius:16px;
-  overflow:hidden;display:grid;grid-template-columns:200px 1fr;
-  transition:border-color .2s,transform .2s,box-shadow .2s;
+  background:var(--card);
+  border:1px solid rgba(255,255,255,0.06);
+  border-top:3px solid var(--c,#f59e0b);
+  border-radius:12px;overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:box-shadow .2s;
+  animation:cardIn .45s cubic-bezier(.22,1,.36,1) both;
+  will-change:transform;
 }
-.card:hover{
-  border-color:rgba(59,130,246,0.3);transform:translateY(-2px);
-  box-shadow:0 12px 40px rgba(59,130,246,0.08);
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(22px) scale(.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
 }
-.card-img-wrap{position:relative;overflow:hidden;height:200px;flex-shrink:0}
-.card-img-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .3s}
-.card:hover .card-img-wrap img{transform:scale(1.06)}
-.card-tag{
-  position:absolute;bottom:8px;left:8px;
-  background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);
-  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
-  padding:3px 8px;border-radius:999px;
-  color:var(--accent);border:1px solid rgba(59,130,246,0.2);
+.card:nth-child(1){animation-delay:.04s}
+.card:nth-child(2){animation-delay:.09s}
+.card:nth-child(3){animation-delay:.14s}
+.card:nth-child(4){animation-delay:.19s}
+.card:nth-child(5){animation-delay:.24s}
+.card:nth-child(6){animation-delay:.29s}
+.card:nth-child(7){animation-delay:.34s}
+.card:nth-child(8){animation-delay:.39s}
+.card:nth-child(9){animation-delay:.44s}
+.card:nth-child(10){animation-delay:.49s}
+
+.card-img{
+  position:relative;overflow:hidden;
+  padding-top:56.25%;
+  background:#080a10;flex-shrink:0;
 }
-.card-body{padding:18px 20px;display:flex;flex-direction:column;gap:8px}
-.card-game{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--accent)}
-.card-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;line-height:1.1}
-.card-desc{font-size:13px;color:var(--muted);line-height:1.6;flex:1}
-.card-footer{display:flex;align-items:center;gap:10px;margin-top:4px;flex-wrap:wrap}
+.card-img img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  transition:transform .4s cubic-bezier(.25,.46,.45,.94);
+}
+.card:hover .card-img img{transform:scale(1.08)}
+.card-img-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(14,17,25,1) 0%,rgba(14,17,25,0) 55%);
+  pointer-events:none;
+}
+.card-badge{
+  position:absolute;top:11px;right:11px;z-index:2;
+  background:rgba(7,8,13,0.85);backdrop-filter:blur(8px);
+  padding:4px 10px;border-radius:999px;
+  font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:var(--c,#f59e0b);border:1px solid rgba(255,255,255,0.1);
+}
+.card-free{
+  position:absolute;top:11px;left:11px;z-index:2;
+  background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.35);
+  backdrop-filter:blur(8px);padding:4px 10px;border-radius:999px;
+  font-size:9px;font-weight:800;letter-spacing:1.5px;color:#22c55e;
+}
+.card-body{
+  padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1;
+}
+.card-game{
+  font-size:9px;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  color:var(--c,#f59e0b);
+}
+.card-title{
+  font-family:'Russo One',sans-serif;font-size:17px;letter-spacing:.3px;
+  color:#fff;line-height:1.2;
+}
+.card-desc{
+  font-size:13px;color:var(--muted);line-height:1.6;font-weight:600;flex:1;
+}
+
+/* ─── DOWNLOAD BUTTON ─── */
 .dl-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#fff;border:none;padding:9px 18px;border-radius:9px;
-  font-family:'Barlow',sans-serif;font-weight:700;font-size:13px;
-  cursor:pointer;text-decoration:none;transition:opacity .15s,transform .15s;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  margin-top:14px;padding:13px 20px;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:#fff;border:none;border-radius:8px;
+  font-family:'Russo One',sans-serif;font-size:13px;letter-spacing:2px;
+  text-transform:uppercase;cursor:pointer;
+  transition:all .2s;position:relative;overflow:hidden;
+  box-shadow:0 4px 20px rgba(34,197,94,0.25);
 }
-.dl-btn:hover{opacity:.88;transform:scale(1.02)}
-.free-badge{
-  font-size:11px;color:var(--muted);
-  display:flex;align-items:center;gap:4px;
+.dl-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.12),transparent 60%);
+  pointer-events:none;
 }
+.dl-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(34,197,94,0.38);
+}
+.dl-btn:active{transform:translateY(0) scale(.98)}
+.dl-btn.fired{
+  background:linear-gradient(135deg,#f59e0b,#d97706);
+  box-shadow:0 4px 20px rgba(245,158,11,0.35);
+}
+.dl-arrow{font-size:16px;transition:transform .2s}
+.dl-btn:hover .dl-arrow{transform:translateY(2px)}
 
-/* EMPTY */
-#emptyState{display:none;text-align:center;padding:60px 20px;color:var(--muted)}
+/* ripple */
+.ripple{
+  position:absolute;border-radius:50%;
+  background:rgba(255,255,255,0.25);pointer-events:none;
+  transform:scale(0);animation:rippleOut .55s ease-out forwards;
+}
+@keyframes rippleOut{to{transform:scale(4);opacity:0}}
 
-/* MOBILE DRAWER */
+/* ─── EMPTY ─── */
+#emptyState{
+  display:none;text-align:center;padding:100px 20px;color:var(--muted);
+  grid-column:1/-1;
+}
+#emptyState .empty-glyph{font-size:54px;margin-bottom:18px;display:block}
+#emptyState p{font-family:'Russo One',sans-serif;font-size:14px;letter-spacing:3px}
+
+/* ─── MOBILE DRAWER ─── */
 #drawer{
-  position:fixed;left:-100%;top:0;bottom:0;width:260px;
-  background:var(--surface);border-right:1px solid var(--border);
-  padding:24px 16px;transition:left .22s ease;z-index:100;overflow-y:auto;
+  position:fixed;left:-100%;top:0;bottom:0;width:280px;
+  background:rgba(13,15,24,0.97);backdrop-filter:blur(24px);
+  border-right:1px solid rgba(245,158,11,0.1);
+  padding:24px 16px;transition:left .25s cubic-bezier(.25,.46,.45,.94);
+  z-index:300;overflow-y:auto;
 }
 #drawer.open{left:0}
 #overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.6);
-  backdrop-filter:blur(3px);opacity:0;pointer-events:none;
-  transition:opacity .22s;z-index:90;
+  position:fixed;inset:0;background:rgba(0,0,0,0.75);
+  opacity:0;pointer-events:none;transition:opacity .25s;z-index:290;
 }
 #overlay.open{opacity:1;pointer-events:auto}
-.drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
 .drawer-logo{
-  font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text;color:transparent;
+  font-family:'Russo One',sans-serif;font-size:19px;letter-spacing:3px;
+  color:var(--gold);text-shadow:0 0 16px rgba(245,158,11,0.4);
 }
-.drawer-x{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;width:32px;height:32px;display:grid;place-items:center}
+.drawer-x{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  color:var(--muted);font-size:18px;cursor:pointer;
+  width:36px;height:36px;display:grid;place-items:center;border-radius:8px;
+  transition:color .15s,border-color .15s;
+}
+.drawer-x:hover{color:var(--gold);border-color:rgba(245,158,11,0.3)}
+.drawer-section{
+  font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  color:var(--muted);padding:0 8px;margin-bottom:12px;
+}
+.drawer-btn{
+  width:100%;text-align:left;padding:11px 14px;border-radius:8px;
+  border:none;background:none;color:var(--muted);
+  font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;margin-bottom:4px;transition:all .15s;
+  display:flex;align-items:center;gap:10px;
+}
+.drawer-btn:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.drawer-btn.active{
+  background:rgba(245,158,11,0.1);color:var(--gold);
+  border:1px solid rgba(245,158,11,0.2);
+}
+.drawer-btn .d-count{
+  margin-left:auto;font-size:10px;font-weight:800;
+  background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:999px;color:var(--muted);
+}
+.drawer-btn.active .d-count{background:rgba(245,158,11,0.15);color:var(--gold)}
 
-@media(max-width:800px){
-  .wrap{grid-template-columns:1fr}
-  .sidebar{display:none}
-  .ham-btn{display:flex}
-  .card{grid-template-columns:1fr}
-  .card-img-wrap{height:220px}
-  .search-wrap{max-width:none}
+/* ─── FOOTER ─── */
+footer{
+  position:relative;z-index:1;
+  border-top:1px solid rgba(255,255,255,0.05);
+  padding:28px 20px;text-align:center;
 }
-@media(max-width:480px){
-  .card-body{padding:14px}
-  .card-title{font-size:18px}
+footer p{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:1px}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;gap:28px}
+  .hero-right{display:none}
+  .hero-h1{font-size:40px}
+}
+@media(max-width:680px){
+  :root{--header-h:56px;--pills-h:50px}
+  .ham-btn{display:flex}
+  .search-wrap{max-width:none}
+  .grid{grid-template-columns:1fr}
+  .hero-h1{font-size:34px}
+  .hero-stats{gap:16px}
+  .stat-num{font-size:22px}
+  .logo{font-size:18px}
+}
+@media(max-width:380px){
+  .hero-h1{font-size:28px}
 }
 </style>
 </head>
 <body>
 
+<!-- BACKGROUND -->
+<div class="bg-blobs">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
+</div>
+<div class="bg-grid"></div>
+
+<!-- HEADER -->
 <header>
   <div class="top">
-    <div class="logo">ModVault</div>
+    <div class="logo">MODVAULT<sup>free</sup></div>
     <div class="search-wrap">
-      <span class="search-icon">🔎</span>
-      <input id="searchInput" type="text" placeholder="Search games or mods...">
+      <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input id="searchInput" type="text" placeholder="Search mods or games..." autocomplete="off">
     </div>
-    <button class="ham-btn" id="ham">☰</button>
+    <button class="ham-btn" id="ham" aria-label="Menu">☰</button>
   </div>
 </header>
 
+<!-- FILTER PILLS -->
+<div class="pills-bar">
+  <div class="pills-inner" id="pillsList"></div>
+</div>
+
+<!-- MOBILE DRAWER -->
 <div id="overlay"></div>
 <aside id="drawer">
   <div class="drawer-head">
-    <div class="drawer-logo">ModVault</div>
+    <div class="drawer-logo">MODVAULT</div>
     <button class="drawer-x" id="drawerClose">✕</button>
   </div>
-  <div class="sidebar-title">Games</div>
-  <div id="mobileGameList"></div>
+  <div class="drawer-section">All Games</div>
+  <div id="drawerList"></div>
 </aside>
 
-<div class="wrap">
-  <aside class="sidebar">
-    <div class="sidebar-title">Games</div>
-    <div id="desktopGameList"></div>
-  </aside>
+<!-- PAGE BODY -->
+<div class="page-body">
 
-  <section>
-    <div class="results-bar">
-      <h2 id="feedTitle">ALL MODS</h2>
-      <span class="results-count" id="resultsCount"></span>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">No Surveys. No Limits.</div>
+      <h1 class="hero-h1">UNLOCK<br>EVERY<span class="gold">MOD.</span></h1>
+      <p class="hero-sub">The largest collection of free mobile game mods, cheats, and unlocked APKs — updated 2025.</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">10+</span>
+          <span class="stat-label">Games</span>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="stat">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Free</span>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="stat">
+          <span class="stat-num">⚡</span>
+          <span class="stat-label">Instant</span>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="stat">
+          <span class="stat-num">📱</span>
+          <span class="stat-label">Mobile</span>
+        </div>
+      </div>
     </div>
-    <div class="feed" id="feed"></div>
+    <div class="hero-right" id="heroTiles"></div>
+  </section>
+
+  <!-- MOD GRID -->
+  <section class="main">
+    <div class="section-bar">
+      <span class="section-title" id="sectionTitle">ALL MODS</span>
+      <span class="section-count" id="sectionCount"></span>
+    </div>
+    <div class="grid" id="grid"></div>
     <div id="emptyState">
-      <div style="font-size:40px;margin-bottom:12px">🎮</div>
-      <p>No mods found. Try a different search.</p>
+      <span class="empty-glyph">🎮</span>
+      <p>No mods found — try a different search</p>
     </div>
   </section>
 </div>
 
+<footer>
+  <p>ModVault &copy; 2025 — Free Game Mods &amp; Unlocked APKs</p>
+</footer>
+
 <script>
-/* ======================================================
-   🎮 MODS DATA — ONLY EDIT THIS PART!
+/* ════════════════════════════════════════
+   MODS DATA
+════════════════════════════════════════ */
+var MODS=[
+  {id:"gta1",  game:"GTA San Andreas",    emoji:"🚗", color:"#ef4444",
+   title:"GTA San Andreas Mod Menu",
+   description:"Spawn cars, fly, God mode, unlimited ammo — the ultimate mod menu for GTA SA mobile.",
+   image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/gta_san_andreas_apk_by_hot51mod_dii4ana-125s-2x.jpg",
+   download:"https://redirectapps.org/cl/i/5ne7o1"},
 
-   To ADD a new game:
-   1. Copy one { block }
-   2. Paste it before the final ];
-   3. Fill in the fields
+  {id:"mc1",   game:"Minecraft",          emoji:"⛏️", color:"#84cc16",
+   title:"Minecraft Skins & Mods Pack",
+   description:"Best skin packs and structure mods — completely transform how Minecraft looks and plays.",
+   image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/minecraft-1639513933156.jpg",
+   download:"https://applocked.org/cl/i/xp6jmv"},
 
-   Fields:
-   - id       → unique short name, no spaces (e.g. "gta1")
-   - game     → shown in sidebar (e.g. "GTA San Andreas")
-   - title    → card headline
-   - description → short description
-   - image    → direct image URL
-   - download → your OGADS content locker link
-   ====================================================== */
-const MODS = [
-  {
-    id: "gta1",
-    game: "GTA San Andreas",
-    title: "GTA San Andreas Mod Menu",
-    description: "Play GTA San Andreas with mod menu, unlock features, spawn cars, fly, God mode.",
-    image: "https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/gta_san_andreas_apk_by_hot51mod_dii4ana-125s-2x.jpg",
-    download: "https://redirectapps.org/cl/i/5ne7o1"
-  },
-  {
-    id: "mc1",
-    game: "Minecraft",
-    title: "Minecraft Skins & Mods",
-    description: "Get Minecraft best skins and mods for structure and graphics.",
-    image: "https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/minecraft-1639513933156.jpg",
-    download: "https://applocked.org/cl/i/xp6jmv"
-  },
-  {
-    id: "DLS",
-    game: "Dream League Soccer",
-    title: "Dream League Money Mod",
-    description: "Play Dream League with infinite money and unlock upgrades and players.",
-    image: "https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-17-04-56-60xiiOFbPnCXbWZ2fL_4Dx2aUkT8ojIqwNec_qmoTzOL52L_mVVFev_WD6AKekAI5YPa.jpg",
-    download: "https://applocked.org/cl/i/n6d336"
-  },
-  {
-    id: "truckers",
-    game: "Truckers of Europe 3",
-    title: "Truckers of Europe 3 Mods",
-    description: "Get exclusive skins, new roads and radio stations.",
-    image: "https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/Untitled%20design_20251202_171332_0000.png",
-    download: "https://lockedapp.org/cl/i/qnkrv6"
-  },
-  {
-    id: "ark",
-    game: "ARK Mobile",
-    title: "ARK Skins & Mods",
-    description: "Play ARK mobile with skins, mods, premium unlocked and more.",
-    image: "https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-18-18-26-00fd8af896bab591d677f03939f07e7c.jpg",
-    download: "https://lockedapp.org/cl/i/ex655m"
-  },
-  {
-    id: "8ball",
-    game: "8 Ball Pool",
-    title: "8 Ball Pool Skins & Mods",
-    description: "Unique cue skins, table skins, special modes and auto-aim assist.",
-    image: "https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/refs/heads/main/2025-12-02-18-46-35-696c8a24_41e9_4d07_8996_30f1bcbef5a4.jpg",
-    download: "https://redirectapps.org/cl/i/5nkvek"
-  },
-  {
-    id: "efootball",
-    game: "eFootball",
-    title: "eFootball Money Mod",
-    description: "Faster progression, easier rewards and smoother gameplay all in one place.",
-    image: "https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-21-32-06-main_page_1_sp.png",
-    download: "https://redirectapps.org/cl/i/6nd86v"
-  },
-  {
-    id: "parchisi",
-    game: "Parchisi Star",
-    title: "Parchisi Star Mod",
-    description: "Premium experience from the start with billions of coins and gems.",
-    image: "https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-22-51-12-aurUWpDZe7mDZ21v3lWlRd_p_ittowLWfL7Oo_ov6rhwnGIUG_xuF1sXBqDNZ8kWt20.jpg",
-    download: "https://applocked.org/cl/i/qnkme6"
-  },
-  {
-    id: "bitlife",
-    game: "BitLife",
-    title: "BitLife Mod — All Unlocked",
-    description: "All features unlocked — Bitizenship, special jobs, run your own business, become whatever you want.",
-    image: "https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/Bitlife%20mod_20251202_224537_0000.png",
-    download: "https://redirectapps.org/cl/i/7jdejv"
-  },
-  {
-    id: "brawlstars",
-    game: "Brawl Stars",
-    title: "Brawl Stars Mod",
-    description: "Unlock brawlers, collect resources and enjoy faster progression with a boosted start.",
-    image: "https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-23-42-05-Brawl_Stars_Logo_2018_present.png",
-    download: "https://redirectapps.org/cl/i/rn73dl"
-  },
+  {id:"DLS",   game:"Dream League Soccer",emoji:"⚽", color:"#06b6d4",
+   title:"Dream League Money Mod",
+   description:"Infinite coins — unlock every upgrade, kit, and world-class player from the start.",
+   image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-17-04-56-60xiiOFbPnCXbWZ2fL_4Dx2aUkT8ojIqwNec_qmoTzOL52L_mVVFev_WD6AKekAI5YPa.jpg",
+   download:"https://applocked.org/cl/i/n6d336"},
+
+  {id:"truckers",game:"Truckers of Europe 3",emoji:"🚚",color:"#f97316",
+   title:"Truckers of Europe 3 Mods",
+   description:"Exclusive truck skins, new routes, and bonus radio stations — drive in style.",
+   image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/Untitled%20design_20251202_171332_0000.png",
+   download:"https://lockedapp.org/cl/i/qnkrv6"},
+
+  {id:"ark",   game:"ARK Mobile",         emoji:"🦕", color:"#a855f7",
+   title:"ARK Mobile Skins & Mods",
+   description:"Play ARK mobile with exclusive skins, mods, and all premium features fully unlocked.",
+   image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-18-18-26-00fd8af896bab591d677f03939f07e7c.jpg",
+   download:"https://lockedapp.org/cl/i/ex655m"},
+
+  {id:"8ball", game:"8 Ball Pool",        emoji:"🎱", color:"#14b8a6",
+   title:"8 Ball Pool Skins & Mods",
+   description:"Unique cue and table skins, special modes, and built-in aim assist — dominate every match.",
+   image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/refs/heads/main/2025-12-02-18-46-35-696c8a24_41e9_4d07_8996_30f1bcbef5a4.jpg",
+   download:"https://redirectapps.org/cl/i/5nkvek"},
+
+  {id:"ef",    game:"eFootball",          emoji:"🏆", color:"#3b82f6",
+   title:"eFootball Money Mod",
+   description:"Faster progression, easier rewards, and smoother gameplay — all unlocked for free.",
+   image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-21-32-06-main_page_1_sp.png",
+   download:"https://redirectapps.org/cl/i/6nd86v"},
+
+  {id:"parchisi",game:"Parchisi Star",    emoji:"🎲", color:"#f59e0b",
+   title:"Parchisi Star Mod",
+   description:"Start with billions of coins and gems — premium experience from the very first roll.",
+   image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-22-51-12-aurUWpDZe7mDZ21v3lWlRd_p_ittowLWfL7Oo_ov6rhwnGIUG_xuF1sXBqDNZ8kWt20.jpg",
+   download:"https://applocked.org/cl/i/qnkme6"},
+
+  {id:"bitlife",game:"BitLife",           emoji:"👤", color:"#ec4899",
+   title:"BitLife — All Unlocked",
+   description:"Bitizenship, special jobs, business mode — every premium feature fully unlocked for free.",
+   image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/Bitlife%20mod_20251202_224537_0000.png",
+   download:"https://redirectapps.org/cl/i/7jdejv"},
+
+  {id:"brawl", game:"Brawl Stars",        emoji:"💥", color:"#8b5cf6",
+   title:"Brawl Stars Mod",
+   description:"Unlock every brawler and collect resources instantly — massively boosted start guaranteed.",
+   image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-23-42-05-Brawl_Stars_Logo_2018_present.png",
+   download:"https://redirectapps.org/cl/i/rn73dl"}
 ];
-/* ====================================================== */
 
-let activeGame = 'All';
-const gameNames = ['All', ...new Set(MODS.map(m => m.game))];
+/* ════════════════════════════════════════
+   STATE & ROUTING
+════════════════════════════════════════ */
+var activeGame='All';
 
-function buildSidebar(id, mobile) {
-  document.getElementById(id).innerHTML = gameNames.map(g => `
-    <button class="game-btn ${g === activeGame ? 'active' : ''}"
-      onclick="${mobile ? 'mobileFilter' : 'filterGame'}('${g.replace(/'/g,"\\'")}')">
-      <span class="dot"></span>${g === 'All' ? '🎮 All Mods' : g}
-    </button>
-  `).join('');
+function getHashGame(){
+  var h=decodeURIComponent(location.hash.replace('#',''));
+  if(!h||h==='all')return'All';
+  var found=MODS.find(function(m){return m.game===h});
+  return found?h:'All';
 }
 
-function renderFeed(list) {
-  const feed = document.getElementById('feed');
-  const empty = document.getElementById('emptyState');
-  document.getElementById('resultsCount').textContent = list.length ? `${list.length} mod${list.length > 1 ? 's' : ''}` : '';
-  if (!list.length) { feed.innerHTML = ''; empty.style.display = 'block'; return; }
-  empty.style.display = 'none';
-  feed.innerHTML = list.map(m => `
-    <article class="card">
-      <div class="card-img-wrap">
-        <img src="${m.image}" alt="${m.title}" loading="lazy"
-          onerror="this.src='https://via.placeholder.com/200x180/111520/64748b?text=Game'">
-        <span class="card-tag">${m.game}</span>
-      </div>
-      <div class="card-body">
-        <div class="card-game">${m.game}</div>
-        <div class="card-title">${m.title}</div>
-        <p class="card-desc">${m.description}</p>
-        <div class="card-footer">
-          <a class="dl-btn" href="${m.download}" target="_blank" rel="noopener">⬇ Free Download</a>
-          <span class="free-badge">🔓 Unlocked</span>
-        </div>
-      </div>
-    </article>
-  `).join('');
+function pushState(game){
+  var hash=game==='All'?'#all':'#'+encodeURIComponent(game);
+  history.pushState({game:game},'',hash);
 }
 
-function setActive(game) {
-  activeGame = game;
-  document.getElementById('feedTitle').textContent = game === 'All' ? 'ALL MODS' : game.toUpperCase();
-  buildSidebar('desktopGameList', false);
-  buildSidebar('mobileGameList', true);
-}
-
-function filterGame(game) {
-  setActive(game);
-  renderFeed(game === 'All' ? MODS : MODS.filter(m => m.game === game));
-}
-
-function mobileFilter(game) { filterGame(game); closeDrawer(); }
-
-document.getElementById('searchInput').addEventListener('input', function() {
-  const q = this.value.toLowerCase().trim();
-  setActive('All');
-  renderFeed(!q ? MODS : MODS.filter(m =>
-    m.title.toLowerCase().includes(q) ||
-    m.description.toLowerCase().includes(q) ||
-    m.game.toLowerCase().includes(q)
-  ));
+window.addEventListener('popstate',function(e){
+  var game=(e.state&&e.state.game)||getHashGame();
+  applyFilter(game,false);
 });
 
-document.getElementById('ham').onclick = () => {
+/* ════════════════════════════════════════
+   BUILD UI
+════════════════════════════════════════ */
+var gameNames=['All'].concat(MODS.map(function(m){return m.game}));
+var gameCounts={All:MODS.length};
+MODS.forEach(function(m){gameCounts[m.game]=(gameCounts[m.game]||0)+1});
+var gameMap={};
+MODS.forEach(function(m){gameMap[m.game]=m});
+
+function esc(s){return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
+
+function buildPills(){
+  document.getElementById('pillsList').innerHTML=gameNames.map(function(g){
+    var mod=gameMap[g];
+    var icon=g==='All'?'🎮':(mod?mod.emoji:'');
+    var active=g===activeGame?'active':'';
+    return'<button class="pill '+active+'" onclick="filterGame(\''+esc(g)+'\')">'
+      +'<span class="pill-icon">'+icon+'</span>'
+      +(g==='All'?'All':g)
+      +'<span class="pill-count">'+gameCounts[g]+'</span>'
+      +'</button>';
+  }).join('');
+}
+
+function buildDrawer(){
+  document.getElementById('drawerList').innerHTML=gameNames.map(function(g){
+    var mod=gameMap[g];
+    var icon=g==='All'?'🎮':(mod?mod.emoji:'');
+    var active=g===activeGame?'active':'';
+    return'<button class="drawer-btn '+active+'" onclick="mobileFilter(\''+esc(g)+'\')">'
+      +icon+' '+(g==='All'?'All Mods':g)
+      +'<span class="d-count">'+gameCounts[g]+'</span>'
+      +'</button>';
+  }).join('');
+}
+
+function buildHeroTiles(){
+  var picks=MODS.slice(0,3);
+  document.getElementById('heroTiles').innerHTML=picks.map(function(m,i){
+    return'<div class="hero-tile'+(i===0?' wide':'')+'">'+
+      '<img src="'+m.image+'" alt="'+m.title+'" loading="lazy" onerror="this.src=\'https://placehold.co/400x200/0e1119/f59e0b?text=Game\'">'+
+      '<div class="hero-tile-overlay"></div>'+
+      '<div class="hero-tile-label">'+
+        '<span class="hero-tile-tag">'+m.emoji+' '+m.game+'</span>'+
+        m.title+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function renderGrid(list){
+  var grid=document.getElementById('grid');
+  var empty=document.getElementById('emptyState');
+  document.getElementById('sectionCount').textContent=
+    list.length?(list.length+' mod'+(list.length!==1?'s':'')):'';
+  if(!list.length){grid.innerHTML='';empty.style.display='block';return}
+  empty.style.display='none';
+  grid.innerHTML=list.map(function(m){
+    return'<article class="card" style="--c:'+m.color+'">'+
+      '<div class="card-img">'+
+        '<img src="'+m.image+'" alt="'+m.title+'" loading="lazy" '+
+          'onerror="this.src=\'https://placehold.co/400x225/0e1119/'+m.color.slice(1)+'?text='+encodeURIComponent(m.game)+'\'">'+
+        '<div class="card-img-overlay"></div>'+
+        '<span class="card-badge">'+m.emoji+' '+m.game+'</span>'+
+        '<span class="card-free">✓ FREE</span>'+
+      '</div>'+
+      '<div class="card-body">'+
+        '<div class="card-game">'+m.game+'</div>'+
+        '<div class="card-title">'+m.title+'</div>'+
+        '<p class="card-desc">'+m.description+'</p>'+
+        '<button class="dl-btn" onclick="handleDownload(\''+m.download+'\',this)">'+
+          '<span class="dl-arrow">⬇</span> FREE DOWNLOAD'+
+        '</button>'+
+      '</div>'+
+    '</article>';
+  }).join('');
+
+  // 3D tilt on non-touch devices
+  if(!('ontouchstart' in window)){
+    grid.querySelectorAll('.card').forEach(initTilt);
+  }
+}
+
+function applyFilter(game,push){
+  if(push===undefined)push=true;
+  activeGame=game;
+  document.getElementById('sectionTitle').textContent=
+    game==='All'?'ALL MODS':game.toUpperCase()+' MODS';
+  buildPills();
+  buildDrawer();
+  var list=game==='All'?MODS:MODS.filter(function(m){return m.game===game});
+  renderGrid(list);
+  if(push)pushState(game);
+}
+
+function filterGame(game){applyFilter(game)}
+function mobileFilter(game){applyFilter(game);closeDrawer()}
+
+/* ════════════════════════════════════════
+   DOWNLOAD — opens new tab so back button
+   stays on this page, not the locker
+════════════════════════════════════════ */
+function handleDownload(url,btn){
+  // Ripple effect
+  var r=document.createElement('span');
+  r.className='ripple';
+  var rect=btn.getBoundingClientRect();
+  var size=Math.max(rect.width,rect.height);
+  r.style.cssText='width:'+size+'px;height:'+size+'px;left:'+(rect.width/2-size/2)+'px;top:'+(rect.height/2-size/2)+'px';
+  btn.appendChild(r);
+  setTimeout(function(){if(r.parentNode)r.parentNode.removeChild(r)},600);
+  // Visual feedback
+  btn.classList.add('fired');
+  btn.innerHTML='<span class="dl-arrow">⏳</span> OPENING...';
+  setTimeout(function(){
+    btn.classList.remove('fired');
+    btn.innerHTML='<span class="dl-arrow">⬇</span> FREE DOWNLOAD';
+  },2200);
+  // Open in a true new tab — prevents back button leaving this page
+  window.open(url,'_blank','noopener,noreferrer');
+  return false;
+}
+
+/* ════════════════════════════════════════
+   SEARCH
+════════════════════════════════════════ */
+var searchTimer;
+document.getElementById('searchInput').addEventListener('input',function(){
+  clearTimeout(searchTimer);
+  var val=this.value;
+  searchTimer=setTimeout(function(){
+    var q=val.toLowerCase().trim();
+    if(!q){applyFilter(activeGame,false);return}
+    activeGame='All';
+    buildPills();buildDrawer();
+    document.getElementById('sectionTitle').textContent='SEARCH RESULTS';
+    history.replaceState({game:'All'},'','#all');
+    renderGrid(MODS.filter(function(m){
+      return m.title.toLowerCase().indexOf(q)>-1||
+             m.description.toLowerCase().indexOf(q)>-1||
+             m.game.toLowerCase().indexOf(q)>-1;
+    }));
+  },200);
+});
+
+/* ════════════════════════════════════════
+   DRAWER
+════════════════════════════════════════ */
+document.getElementById('ham').onclick=function(){
   document.getElementById('drawer').classList.add('open');
   document.getElementById('overlay').classList.add('open');
 };
-function closeDrawer() {
+function closeDrawer(){
   document.getElementById('drawer').classList.remove('open');
   document.getElementById('overlay').classList.remove('open');
 }
-document.getElementById('overlay').onclick = closeDrawer;
-document.getElementById('drawerClose').onclick = closeDrawer;
+document.getElementById('overlay').onclick=closeDrawer;
+document.getElementById('drawerClose').onclick=closeDrawer;
 
-buildSidebar('desktopGameList', false);
-buildSidebar('mobileGameList', true);
-renderFeed(MODS);
+/* ════════════════════════════════════════
+   3D CARD TILT
+════════════════════════════════════════ */
+function initTilt(card){
+  card.addEventListener('mousemove',function(e){
+    var r=card.getBoundingClientRect();
+    var x=(e.clientX-r.left)/r.width-.5;
+    var y=(e.clientY-r.top)/r.height-.5;
+    card.style.transition='none';
+    card.style.transform='perspective(700px) rotateY('+(x*7)+'deg) rotateX('+(-y*7)+'deg) translateY(-4px) scale(1.01)';
+  });
+  card.addEventListener('mouseleave',function(){
+    card.style.transition='transform .4s ease';
+    card.style.transform='';
+  });
+}
+
+/* ════════════════════════════════════════
+   INIT
+════════════════════════════════════════ */
+(function(){
+  var g=getHashGame();
+  activeGame=g;
+  buildPills();
+  buildDrawer();
+  buildHeroTiles();
+  document.getElementById('sectionTitle').textContent=
+    g==='All'?'ALL MODS':g.toUpperCase()+' MODS';
+  var list=g==='All'?MODS:MODS.filter(function(m){return m.game===g});
+  renderGrid(list);
+  // Stamp the initial history state so popstate has data from the start
+  history.replaceState({game:g},'',location.hash||'#all');
+})();
 </script>
 </body>
 </html>
