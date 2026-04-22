@@ -3,25 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ModVault — Free Game Mods 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Exo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta name="description" content="ModVault — The #1 source for free mobile game mods, unlocked APKs and cheats in 2026. GTA, Minecraft, Brawl Stars and more.">
+<title>ModVault — Free Game Mods & Cheats 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Exo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════
-   TOKENS
-═══════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════ */
 :root{
-  --bg:#07080d;
-  --surface:#0d0f18;
-  --card:#0e1119;
-  --border:rgba(255,255,255,0.06);
+  --bg:#06070c;
+  --bg2:#090b12;
+  --surface:#0d0f1a;
+  --card:#0f1120;
+  --border:rgba(255,255,255,0.07);
   --gold:#f59e0b;
-  --gold2:#fbbf24;
+  --gold-dim:rgba(245,158,11,0.12);
   --green:#22c55e;
-  --text:#f0f4ff;
-  --muted:#4a5270;
-  --maxw:1160px;
-  --header-h:62px;
-  --pills-h:56px;
+  --blue:#3b82f6;
+  --text:#eef2ff;
+  --muted:#4b5480;
+  --muted2:#6b7280;
+  --maxw:1180px;
+  --nav-h:66px;
+  --radius:14px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -29,251 +33,579 @@ body{
   font-family:'Exo 2',system-ui,sans-serif;
   background:var(--bg);color:var(--text);
   min-height:100vh;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
 }
 
-/* ─── ANIMATED BACKGROUND BLOBS ─── */
-.bg-blobs{
+/* ── BACKGROUND ── */
+.bg-canvas{
   position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
 }
 .blob{
-  position:absolute;border-radius:50%;filter:blur(90px);opacity:.12;
-  animation:blobFloat 14s ease-in-out infinite alternate;
+  position:absolute;border-radius:50%;filter:blur(100px);
+  animation:blobDrift ease-in-out infinite alternate;
 }
-.blob-1{width:500px;height:500px;background:#f59e0b;top:-120px;left:-100px;animation-duration:16s}
-.blob-2{width:400px;height:400px;background:#6366f1;top:30%;right:-80px;animation-duration:20s;animation-delay:-5s}
-.blob-3{width:350px;height:350px;background:#ec4899;bottom:-60px;left:30%;animation-duration:18s;animation-delay:-9s}
-.blob-4{width:280px;height:280px;background:#22c55e;top:55%;left:10%;animation-duration:22s;animation-delay:-3s;opacity:.07}
-@keyframes blobFloat{
+.b1{width:600px;height:600px;background:#f59e0b;opacity:.07;top:-200px;left:-150px;animation-duration:18s}
+.b2{width:500px;height:500px;background:#6366f1;opacity:.08;top:40%;right:-150px;animation-duration:22s;animation-delay:-7s}
+.b3{width:400px;height:400px;background:#ec4899;opacity:.06;bottom:-100px;left:35%;animation-duration:20s;animation-delay:-11s}
+.b4{width:300px;height:300px;background:#22c55e;opacity:.05;top:60%;left:5%;animation-duration:26s;animation-delay:-4s}
+@keyframes blobDrift{
   0%{transform:translate(0,0) scale(1)}
-  33%{transform:translate(30px,-40px) scale(1.06)}
-  66%{transform:translate(-20px,30px) scale(0.94)}
-  100%{transform:translate(40px,20px) scale(1.04)}
+  50%{transform:translate(40px,-50px) scale(1.08)}
+  100%{transform:translate(-30px,35px) scale(0.93)}
 }
-
-/* GRID OVERLAY */
 .bg-grid{
   position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:
-    linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
-  background-size:50px 50px;
+    linear-gradient(rgba(255,255,255,0.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.018) 1px,transparent 1px);
+  background-size:55px 55px;
 }
 
-/* ─── HEADER ─── */
-header{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  height:var(--header-h);
-  background:rgba(7,8,13,0.88);
+/* ══════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  height:var(--nav-h);
+  background:rgba(6,7,12,0.9);
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  border-bottom:1px solid rgba(245,158,11,0.12);
+  border-bottom:1px solid rgba(245,158,11,0.1);
 }
-.top{
+.nav-inner{
   max-width:var(--maxw);margin:0 auto;height:100%;
-  display:flex;align-items:center;gap:16px;padding:0 20px;
+  display:flex;align-items:center;gap:0;padding:0 24px;
 }
-.logo{
-  font-family:'Russo One',sans-serif;font-size:22px;letter-spacing:4px;
-  color:var(--gold);flex-shrink:0;
-  text-shadow:0 0 24px rgba(245,158,11,0.5);
+.nav-logo{
+  font-family:'Russo One',sans-serif;font-size:21px;letter-spacing:4px;
+  color:var(--gold);flex-shrink:0;margin-right:36px;
+  text-shadow:0 0 30px rgba(245,158,11,0.5);
+  cursor:pointer;text-decoration:none;
+}
+.nav-logo span{font-size:10px;letter-spacing:2px;color:var(--muted);vertical-align:super;margin-left:4px;font-family:'Exo 2',sans-serif;font-weight:700}
+.nav-links{
+  display:flex;align-items:center;gap:4px;flex:1;
+}
+.nav-link{
+  padding:8px 14px;border-radius:8px;font-size:13px;font-weight:700;
+  color:var(--muted2);letter-spacing:.5px;cursor:pointer;
+  transition:color .15s,background .15s;text-decoration:none;
+  border:none;background:none;font-family:'Exo 2',sans-serif;
+}
+.nav-link:hover{color:var(--text);background:rgba(255,255,255,0.04)}
+.nav-link.active{color:var(--gold)}
+.nav-right{display:flex;align-items:center;gap:12px;margin-left:auto}
+.nav-search{
   position:relative;
 }
-.logo sup{
-  font-size:8px;letter-spacing:2px;color:var(--muted);
-  position:absolute;top:3px;right:-28px;text-transform:uppercase;
-}
-.search-wrap{flex:1;position:relative;max-width:440px}
-.search-icon-svg{
-  position:absolute;left:14px;top:50%;transform:translateY(-50%);
-  color:var(--muted);width:15px;height:15px;pointer-events:none;
-}
-.search-wrap input{
-  width:100%;padding:9px 16px 9px 42px;
-  background:rgba(255,255,255,0.04);
+.nav-search input{
+  width:200px;padding:8px 14px 8px 38px;
+  background:rgba(255,255,255,0.05);
   border:1px solid rgba(255,255,255,0.08);
-  border-radius:8px;
-  color:var(--text);font-family:'Exo 2',sans-serif;font-size:14px;font-weight:600;
-  outline:none;transition:border-color .2s,box-shadow .2s;
+  border-radius:8px;color:var(--text);
+  font-family:'Exo 2',sans-serif;font-size:13px;font-weight:600;
+  outline:none;transition:all .2s;
 }
-.search-wrap input::placeholder{color:var(--muted);font-weight:400}
-.search-wrap input:focus{
-  border-color:rgba(245,158,11,0.4);
-  box-shadow:0 0 0 3px rgba(245,158,11,0.06);
+.nav-search input:focus{
+  width:260px;border-color:rgba(245,158,11,0.35);
+  background:rgba(255,255,255,0.07);
+  box-shadow:0 0 0 3px rgba(245,158,11,0.05);
 }
-.ham-btn{
-  display:none;width:38px;height:38px;border-radius:8px;
-  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
-  color:var(--gold);font-size:18px;cursor:pointer;
-  align-items:center;justify-content:center;flex-shrink:0;
-  transition:background .15s;
+.nav-search input::placeholder{color:var(--muted);font-weight:400}
+.nav-search svg{
+  position:absolute;left:11px;top:50%;transform:translateY(-50%);
+  width:14px;height:14px;color:var(--muted);pointer-events:none;
 }
-.ham-btn:hover{background:rgba(245,158,11,0.08)}
-
-/* ─── STICKY FILTER PILLS ─── */
-.pills-bar{
-  position:fixed;top:var(--header-h);left:0;right:0;z-index:190;
-  height:var(--pills-h);
-  background:rgba(7,8,13,0.82);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-bottom:1px solid rgba(255,255,255,0.05);
-  display:flex;align-items:center;
-}
-.pills-inner{
-  max-width:var(--maxw);margin:0 auto;width:100%;
-  padding:0 20px;display:flex;gap:8px;align-items:center;
-  overflow-x:auto;scrollbar-width:none;
-}
-.pills-inner::-webkit-scrollbar{display:none}
-.pill{
-  flex-shrink:0;padding:7px 16px;border-radius:999px;
-  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
-  color:var(--muted);font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;
-  cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:7px;
+.nav-cta{
+  padding:9px 20px;border-radius:8px;
+  background:linear-gradient(135deg,var(--gold),#d97706);
+  color:#000;font-family:'Russo One',sans-serif;font-size:12px;letter-spacing:1.5px;
+  cursor:pointer;border:none;transition:all .18s;
+  box-shadow:0 4px 20px rgba(245,158,11,0.25);
   white-space:nowrap;
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(245,158,11,0.38)}
+.ham-btn{
+  display:none;width:40px;height:40px;border-radius:8px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  color:var(--gold);font-size:20px;cursor:pointer;
+  align-items:center;justify-content:center;
+}
+
+/* ══════════════════════════════════════════
+   MOBILE DRAWER
+══════════════════════════════════════════ */
+#overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.8);
+  opacity:0;pointer-events:none;transition:opacity .25s;z-index:800;
+}
+#overlay.open{opacity:1;pointer-events:auto}
+#drawer{
+  position:fixed;left:-100%;top:0;bottom:0;width:290px;
+  background:rgba(9,11,18,0.98);backdrop-filter:blur(24px);
+  border-right:1px solid rgba(245,158,11,0.1);
+  padding:0;transition:left .25s cubic-bezier(.25,.46,.45,.94);z-index:900;
+  overflow-y:auto;display:flex;flex-direction:column;
+}
+#drawer.open{left:0}
+.drawer-top{
+  padding:20px 20px 16px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.drawer-logo{
+  font-family:'Russo One',sans-serif;font-size:18px;letter-spacing:3px;
+  color:var(--gold);text-shadow:0 0 16px rgba(245,158,11,0.4);
+}
+.drawer-close{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  color:var(--muted2);font-size:17px;cursor:pointer;
+  width:34px;height:34px;display:grid;place-items:center;border-radius:8px;
+}
+.drawer-search{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05)}
+.drawer-search input{
+  width:100%;padding:10px 14px;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;color:var(--text);
+  font-family:'Exo 2',sans-serif;font-size:14px;font-weight:600;outline:none;
+}
+.drawer-search input::placeholder{color:var(--muted)}
+.drawer-nav{padding:16px 12px}
+.drawer-nav-label{
+  font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  color:var(--muted);padding:0 10px;margin-bottom:8px;
+}
+.drawer-nav-link{
+  display:flex;align-items:center;gap:12px;width:100%;padding:12px 12px;
+  border-radius:8px;border:none;background:none;
+  color:var(--muted2);font-family:'Exo 2',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;transition:all .15s;margin-bottom:4px;text-align:left;
+}
+.drawer-nav-link:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.drawer-nav-link.active{background:rgba(245,158,11,0.1);color:var(--gold)}
+.drawer-nav-icon{font-size:18px;width:24px;text-align:center}
+.drawer-games{padding:0 12px 24px}
+.drawer-games-label{
+  font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  color:var(--muted);padding:0 10px;margin-bottom:10px;margin-top:4px;
+}
+.drawer-game-btn{
+  display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;
+  border-radius:8px;border:none;background:none;
+  color:var(--muted2);font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;transition:all .15s;margin-bottom:3px;text-align:left;
+}
+.drawer-game-btn:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.drawer-game-btn.active{background:rgba(245,158,11,0.1);color:var(--gold)}
+.d-count{
+  margin-left:auto;font-size:10px;font-weight:800;
+  background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:999px;color:var(--muted);
+}
+.drawer-game-btn.active .d-count{background:rgba(245,158,11,0.15);color:var(--gold)}
+
+/* ══════════════════════════════════════════
+   PAGE WRAPPER
+══════════════════════════════════════════ */
+.page{padding-top:var(--nav-h);position:relative;z-index:1}
+section{display:none}
+section.visible{display:block}
+
+/* ══════════════════════════════════════════
+   ── SECTION: HOME ──
+══════════════════════════════════════════ */
+
+/* HERO */
+.hero{
+  max-width:var(--maxw);margin:0 auto;
+  padding:70px 24px 50px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:60px;align-items:center;
+}
+.hero-eyebrow{
+  font-size:11px;font-weight:800;letter-spacing:5px;text-transform:uppercase;
+  color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:20px;
+}
+.hero-eyebrow::before{content:'';width:32px;height:2px;background:var(--gold);border-radius:2px;display:block}
+.hero-h1{
+  font-family:'Russo One',sans-serif;font-size:60px;line-height:.96;
+  letter-spacing:1px;color:#fff;
+}
+.hero-h1 em{
+  font-style:normal;display:block;color:var(--gold);
+  text-shadow:0 0 50px rgba(245,158,11,0.35);
+}
+.hero-sub{
+  margin-top:20px;font-size:16px;color:var(--muted2);
+  line-height:1.7;font-weight:500;max-width:440px;
+}
+.hero-btns{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:14px 28px;border-radius:10px;
+  background:linear-gradient(135deg,var(--gold),#d97706);
+  color:#000;font-family:'Russo One',sans-serif;font-size:13px;letter-spacing:1.5px;
+  text-transform:uppercase;cursor:pointer;border:none;text-decoration:none;
+  transition:all .2s;box-shadow:0 6px 28px rgba(245,158,11,0.3);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 38px rgba(245,158,11,0.45)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:14px 28px;border-radius:10px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.12);
+  color:var(--text);font-family:'Russo One',sans-serif;font-size:13px;letter-spacing:1.5px;
+  text-transform:uppercase;cursor:pointer;text-decoration:none;
+  transition:all .2s;
+}
+.btn-secondary:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.22);transform:translateY(-2px)}
+.hero-stats{
+  display:flex;gap:28px;margin-top:40px;padding-top:32px;
+  border-top:1px solid rgba(255,255,255,0.07);flex-wrap:wrap;align-items:center;
+}
+.stat-item{display:flex;flex-direction:column;gap:3px}
+.stat-n{
+  font-family:'Russo One',sans-serif;font-size:30px;color:var(--gold);
+  line-height:1;text-shadow:0 0 24px rgba(245,158,11,0.3);
+}
+.stat-l{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.stat-sep{width:1px;height:44px;background:rgba(255,255,255,0.08);align-self:center}
+
+/* HERO RIGHT — mosaic */
+.hero-mosaic{
+  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;
+  gap:10px;
+}
+.mosaic-tile{
+  border-radius:12px;overflow:hidden;position:relative;
+  background:var(--surface);border:1px solid var(--border);
+  transition:transform .22s,box-shadow .22s;cursor:pointer;
+}
+.mosaic-tile:first-child{grid-column:span 2;aspect-ratio:16/7}
+.mosaic-tile:not(:first-child){aspect-ratio:4/3}
+.mosaic-tile:hover{transform:scale(1.02);box-shadow:0 16px 50px rgba(0,0,0,0.5)}
+.mosaic-tile img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .35s}
+.mosaic-tile:hover img{transform:scale(1.07)}
+.mosaic-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(6,7,12,.88) 0%,transparent 55%);
+}
+.mosaic-label{
+  position:absolute;bottom:12px;left:12px;right:12px;
+}
+.mosaic-game{
+  font-size:9px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--gold);display:block;margin-bottom:3px;
+}
+.mosaic-title{font-family:'Russo One',sans-serif;font-size:14px;color:#fff;letter-spacing:.3px}
+
+/* MARQUEE / TICKER */
+.marquee-wrap{
+  border-top:1px solid rgba(255,255,255,0.05);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  background:rgba(245,158,11,0.04);
+  overflow:hidden;padding:12px 0;
+  position:relative;
+}
+.marquee-wrap::before,.marquee-wrap::after{
+  content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none;
+}
+.marquee-wrap::before{left:0;background:linear-gradient(to right,var(--bg),transparent)}
+.marquee-wrap::after{right:0;background:linear-gradient(to left,var(--bg),transparent)}
+.marquee-track{
+  display:flex;gap:0;animation:marquee 30s linear infinite;white-space:nowrap;
+}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee-item{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:0 32px;font-size:12px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--muted2);
+}
+.marquee-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:.5;flex-shrink:0}
+
+/* TRUST BAR */
+.trust-bar{
+  max-width:var(--maxw);margin:60px auto 0;padding:0 24px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+}
+.trust-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:24px 22px;display:flex;align-items:center;gap:16px;
+  transition:border-color .2s,transform .2s;
+}
+.trust-card:hover{border-color:rgba(245,158,11,0.2);transform:translateY(-3px)}
+.trust-icon{
+  width:48px;height:48px;border-radius:10px;flex-shrink:0;
+  display:grid;place-items:center;font-size:22px;
+  background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.15);
+}
+.trust-text strong{
+  display:block;font-family:'Russo One',sans-serif;font-size:15px;
+  color:var(--text);letter-spacing:.5px;
+}
+.trust-text span{font-size:12px;color:var(--muted);font-weight:600}
+
+/* FEATURED MODS */
+.section-header{
+  max-width:var(--maxw);margin:0 auto;padding:64px 24px 28px;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+}
+.section-label{
+  font-size:11px;font-weight:800;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:8px;
+}
+.section-label::before{content:'';width:20px;height:2px;background:var(--gold);border-radius:2px;display:block}
+.section-title{
+  font-family:'Russo One',sans-serif;font-size:28px;letter-spacing:1px;color:#fff;
+}
+.section-link{
+  font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;
+  cursor:pointer;display:flex;align-items:center;gap:6px;
+  transition:gap .18s;white-space:nowrap;
+}
+.section-link:hover{gap:10px}
+
+.featured-grid{
+  max-width:var(--maxw);margin:0 auto;
+  padding:0 24px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+}
+
+/* HOW IT WORKS */
+.how-section{
+  max-width:var(--maxw);margin:0 auto;padding:0 24px 20px;
+}
+.steps-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;
+}
+.step{
+  padding:40px 32px;position:relative;
+  border-right:1px solid rgba(255,255,255,0.06);
+}
+.step:last-child{border-right:none}
+.step::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+.step-num{
+  font-family:'Russo One',sans-serif;font-size:56px;line-height:1;
+  color:rgba(245,158,11,0.08);letter-spacing:-2px;margin-bottom:16px;
+}
+.step-icon{
+  font-size:32px;margin-bottom:14px;display:block;
+}
+.step-title{
+  font-family:'Russo One',sans-serif;font-size:19px;letter-spacing:.5px;
+  color:#fff;margin-bottom:10px;
+}
+.step-desc{font-size:14px;color:var(--muted2);line-height:1.7;font-weight:500}
+
+/* POPULAR GAMES */
+.games-grid{
+  max-width:var(--maxw);margin:0 auto;
+  padding:0 24px;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:12px;
+}
+.game-chip{
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:16px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;
+  cursor:pointer;transition:all .18s;text-align:center;
+}
+.game-chip:hover{
+  border-color:rgba(245,158,11,0.25);
+  background:rgba(245,158,11,0.05);
+  transform:translateY(-3px);
+}
+.game-chip-icon{font-size:28px}
+.game-chip-name{
+  font-size:11px;font-weight:700;letter-spacing:.5px;
+  color:var(--muted2);line-height:1.3;
+}
+.game-chip-count{
+  font-size:10px;font-weight:800;letter-spacing:1px;
+  color:var(--gold);background:rgba(245,158,11,0.1);
+  padding:2px 8px;border-radius:999px;
+}
+
+/* ══════════════════════════════════════════
+   ── SECTION: MODS ──
+══════════════════════════════════════════ */
+.mods-top{
+  max-width:var(--maxw);margin:0 auto;
+  padding:48px 24px 28px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.mods-title{
+  font-family:'Russo One',sans-serif;font-size:28px;letter-spacing:1px;color:#fff;flex:1;min-width:160px;
+}
+.mods-search{position:relative;flex:1;max-width:360px}
+.mods-search input{
+  width:100%;padding:10px 16px 10px 42px;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  border-radius:9px;color:var(--text);font-family:'Exo 2',sans-serif;
+  font-size:14px;font-weight:600;outline:none;transition:all .2s;
+}
+.mods-search input:focus{
+  border-color:rgba(245,158,11,0.35);
+  box-shadow:0 0 0 3px rgba(245,158,11,0.05);
+}
+.mods-search input::placeholder{color:var(--muted);font-weight:400}
+.mods-search svg{
+  position:absolute;left:13px;top:50%;transform:translateY(-50%);
+  width:15px;height:15px;color:var(--muted);pointer-events:none;
+}
+
+/* filter pills */
+.pills-row{
+  max-width:var(--maxw);margin:0 auto;
+  padding:0 24px 24px;
+  display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+}
+.pills-row::-webkit-scrollbar{display:none}
+.pill{
+  flex-shrink:0;padding:8px 18px;border-radius:999px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  color:var(--muted2);font-family:'Exo 2',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:7px;white-space:nowrap;
 }
 .pill:hover{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2);color:var(--text)}
 .pill.active{
   background:rgba(245,158,11,0.14);border-color:rgba(245,158,11,0.45);
-  color:var(--gold);
-  box-shadow:0 0 18px rgba(245,158,11,0.1);
+  color:var(--gold);box-shadow:0 0 20px rgba(245,158,11,0.08);
 }
-.pill .pill-count{
+.pill .p-count{
   font-size:10px;font-weight:800;
-  background:rgba(255,255,255,0.08);
-  padding:2px 7px;border-radius:999px;
-  color:var(--muted);
+  background:rgba(255,255,255,0.08);padding:2px 7px;border-radius:999px;color:var(--muted);
 }
-.pill.active .pill-count{
-  background:rgba(245,158,11,0.2);color:var(--gold);
-}
-.pill-icon{font-size:15px;line-height:1}
+.pill.active .p-count{background:rgba(245,158,11,0.2);color:var(--gold)}
 
-/* ─── PAGE BODY OFFSET ─── */
-.page-body{
-  padding-top:calc(var(--header-h) + var(--pills-h));
-  position:relative;z-index:1;
-}
-
-/* ─── HERO ─── */
-.hero{
-  max-width:var(--maxw);margin:0 auto;
-  padding:52px 20px 36px;
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:40px;align-items:center;
-}
-.hero-eyebrow{
-  font-family:'Exo 2',sans-serif;font-size:11px;font-weight:800;
-  letter-spacing:4px;text-transform:uppercase;color:var(--gold);
-  display:flex;align-items:center;gap:8px;margin-bottom:18px;
-}
-.hero-eyebrow::before{
-  content:'';width:28px;height:2px;background:var(--gold);
-  display:inline-block;border-radius:2px;
-}
-.hero-h1{
-  font-family:'Russo One',sans-serif;font-size:52px;line-height:1;
-  letter-spacing:1px;color:#fff;
-}
-.hero-h1 .gold{
-  color:var(--gold);display:block;
-  text-shadow:0 0 40px rgba(245,158,11,0.3);
-}
-.hero-sub{
-  margin-top:16px;font-size:16px;color:var(--muted);
-  line-height:1.65;font-weight:600;max-width:420px;
-}
-.hero-stats{
-  display:flex;gap:24px;margin-top:32px;flex-wrap:wrap;align-items:center;
-}
-.stat{display:flex;flex-direction:column;gap:2px}
-.stat-num{
-  font-family:'Russo One',sans-serif;font-size:28px;color:var(--gold);
-  line-height:1;text-shadow:0 0 20px rgba(245,158,11,0.3);
-}
-.stat-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
-.hero-divider{width:1px;height:40px;background:rgba(255,255,255,0.08)}
-
-.hero-right{
-  display:grid;grid-template-columns:1fr 1fr;gap:10px;
-}
-.hero-tile{
-  border-radius:12px;overflow:hidden;position:relative;
-  aspect-ratio:1/1;background:#0d0f18;border:1px solid rgba(255,255,255,0.06);
-  cursor:pointer;transition:transform .2s,box-shadow .2s;
-}
-.hero-tile.wide{grid-column:span 2;aspect-ratio:2/1}
-.hero-tile:hover{transform:scale(1.02);box-shadow:0 12px 40px rgba(0,0,0,0.5)}
-.hero-tile img{
-  width:100%;height:100%;object-fit:cover;object-position:center top;
-  transition:transform .35s;
-}
-.hero-tile:hover img{transform:scale(1.06)}
-.hero-tile-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(7,8,13,0.9) 0%,transparent 60%);
-}
-.hero-tile-label{
-  position:absolute;bottom:12px;left:12px;right:12px;
-  font-family:'Russo One',sans-serif;font-size:13px;letter-spacing:.5px;color:#fff;
-}
-.hero-tile-tag{
-  font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  color:var(--gold);display:block;margin-bottom:3px;
-}
-
-/* ─── MAIN SECTION ─── */
-.main{
-  max-width:var(--maxw);margin:0 auto;
-  padding:0 20px 80px;
-}
-.section-bar{
-  display:flex;align-items:baseline;gap:16px;margin-bottom:22px;
-  border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:16px;
-}
-.section-title{
-  font-family:'Russo One',sans-serif;font-size:20px;letter-spacing:2px;
-  color:#fff;
-}
-.section-count{
-  font-size:12px;font-weight:700;letter-spacing:1px;color:var(--muted);
-}
-
-/* ─── CARD GRID ─── */
-.grid{
+/* grid */
+.mods-grid-wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px 80px}
+.mods-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
   gap:18px;
 }
 
-/* ─── CARD ─── */
+/* ══════════════════════════════════════════
+   ── SECTION: HOW IT WORKS (full page) ──
+══════════════════════════════════════════ */
+.hiw-hero{
+  max-width:700px;margin:0 auto;text-align:center;padding:72px 24px 48px;
+}
+.hiw-hero .section-label{justify-content:center;margin-bottom:12px}
+.hiw-hero .section-label::before{display:none}
+.hiw-hero h1{
+  font-family:'Russo One',sans-serif;font-size:42px;letter-spacing:1px;color:#fff;margin-bottom:16px;
+}
+.hiw-hero p{font-size:16px;color:var(--muted2);line-height:1.7;font-weight:500}
+
+.hiw-steps{
+  max-width:var(--maxw);margin:0 auto;padding:0 24px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:60px;
+}
+.hiw-step{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:36px 28px;position:relative;overflow:hidden;
+  transition:border-color .2s,transform .2s;
+}
+.hiw-step:hover{border-color:rgba(245,158,11,0.2);transform:translateY(-4px)}
+.hiw-step::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+.hiw-step-num{
+  font-family:'Russo One',sans-serif;font-size:64px;
+  color:rgba(245,158,11,0.06);line-height:1;margin-bottom:4px;
+}
+.hiw-step-icon{font-size:38px;display:block;margin-bottom:18px}
+.hiw-step-title{font-family:'Russo One',sans-serif;font-size:20px;color:#fff;margin-bottom:12px}
+.hiw-step-desc{font-size:14px;color:var(--muted2);line-height:1.75;font-weight:500}
+
+.hiw-warning{
+  max-width:var(--maxw);margin:0 auto;padding:0 24px 80px;
+}
+.hiw-notice{
+  background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.15);
+  border-radius:var(--radius);padding:28px 32px;
+  display:flex;align-items:flex-start;gap:18px;
+}
+.hiw-notice-icon{font-size:28px;flex-shrink:0;margin-top:2px}
+.hiw-notice-text strong{
+  display:block;font-family:'Russo One',sans-serif;font-size:16px;
+  color:var(--gold);letter-spacing:.5px;margin-bottom:8px;
+}
+.hiw-notice-text p{font-size:14px;color:var(--muted2);line-height:1.7;font-weight:500}
+
+/* ══════════════════════════════════════════
+   ── SECTION: FAQ ──
+══════════════════════════════════════════ */
+.faq-hero{
+  max-width:600px;margin:0 auto;text-align:center;padding:72px 24px 48px;
+}
+.faq-hero .section-label{justify-content:center;margin-bottom:12px}
+.faq-hero .section-label::before{display:none}
+.faq-hero h1{
+  font-family:'Russo One',sans-serif;font-size:42px;letter-spacing:1px;color:#fff;margin-bottom:14px;
+}
+.faq-hero p{font-size:16px;color:var(--muted2);line-height:1.7;font-weight:500}
+
+.faq-list{
+  max-width:800px;margin:0 auto;padding:0 24px 80px;
+  display:flex;flex-direction:column;gap:12px;
+}
+.faq-item{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;transition:border-color .2s;
+}
+.faq-item.open{border-color:rgba(245,158,11,0.2)}
+.faq-q{
+  width:100%;text-align:left;padding:20px 24px;
+  background:none;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.faq-q-text{
+  font-family:'Exo 2',sans-serif;font-size:15px;font-weight:700;
+  color:var(--text);letter-spacing:.3px;
+}
+.faq-arrow{
+  font-size:18px;color:var(--muted);transition:transform .25s,color .2s;flex-shrink:0;
+}
+.faq-item.open .faq-arrow{transform:rotate(45deg);color:var(--gold)}
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height .3s ease;
+}
+.faq-item.open .faq-a{max-height:300px}
+.faq-a-inner{
+  padding:0 24px 22px;font-size:14px;color:var(--muted2);
+  line-height:1.75;font-weight:500;border-top:1px solid rgba(255,255,255,0.05);
+  padding-top:18px;
+}
+
+/* ══════════════════════════════════════════
+   SHARED CARD
+══════════════════════════════════════════ */
 .card{
   background:var(--card);
   border:1px solid rgba(255,255,255,0.06);
   border-top:3px solid var(--c,#f59e0b);
-  border-radius:12px;overflow:hidden;
+  border-radius:var(--radius);overflow:hidden;
   display:flex;flex-direction:column;
-  transition:box-shadow .2s;
   animation:cardIn .45s cubic-bezier(.22,1,.36,1) both;
   will-change:transform;
 }
 @keyframes cardIn{
-  from{opacity:0;transform:translateY(22px) scale(.97)}
+  from{opacity:0;transform:translateY(20px) scale(.97)}
   to{opacity:1;transform:translateY(0) scale(1)}
 }
-.card:nth-child(1){animation-delay:.04s}
-.card:nth-child(2){animation-delay:.09s}
-.card:nth-child(3){animation-delay:.14s}
-.card:nth-child(4){animation-delay:.19s}
-.card:nth-child(5){animation-delay:.24s}
-.card:nth-child(6){animation-delay:.29s}
-.card:nth-child(7){animation-delay:.34s}
-.card:nth-child(8){animation-delay:.39s}
-.card:nth-child(9){animation-delay:.44s}
-.card:nth-child(10){animation-delay:.49s}
+.card:nth-child(1){animation-delay:.03s}.card:nth-child(2){animation-delay:.07s}
+.card:nth-child(3){animation-delay:.11s}.card:nth-child(4){animation-delay:.15s}
+.card:nth-child(5){animation-delay:.19s}.card:nth-child(6){animation-delay:.23s}
+.card:nth-child(7){animation-delay:.27s}.card:nth-child(8){animation-delay:.31s}
+.card:nth-child(9){animation-delay:.35s}.card:nth-child(10){animation-delay:.39s}
 
 .card-img{
   position:relative;overflow:hidden;
-  padding-top:56.25%;
-  background:#080a10;flex-shrink:0;
+  padding-top:56.25%;background:#08090f;flex-shrink:0;
 }
 .card-img img{
   position:absolute;inset:0;width:100%;height:100%;
@@ -281,271 +613,443 @@ header{
   transition:transform .4s cubic-bezier(.25,.46,.45,.94);
 }
 .card:hover .card-img img{transform:scale(1.08)}
-.card-img-overlay{
+.card-overlay{
   position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(14,17,25,1) 0%,rgba(14,17,25,0) 55%);
+  background:linear-gradient(to top,rgba(15,17,32,1) 0%,transparent 55%);
   pointer-events:none;
 }
-.card-badge{
-  position:absolute;top:11px;right:11px;z-index:2;
-  background:rgba(7,8,13,0.85);backdrop-filter:blur(8px);
+.card-tag{
+  position:absolute;top:10px;right:10px;z-index:2;
+  background:rgba(6,7,12,.85);backdrop-filter:blur(8px);
   padding:4px 10px;border-radius:999px;
   font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
   color:var(--c,#f59e0b);border:1px solid rgba(255,255,255,0.1);
 }
-.card-free{
-  position:absolute;top:11px;left:11px;z-index:2;
+.card-free-tag{
+  position:absolute;top:10px;left:10px;z-index:2;
   background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.35);
   backdrop-filter:blur(8px);padding:4px 10px;border-radius:999px;
   font-size:9px;font-weight:800;letter-spacing:1.5px;color:#22c55e;
 }
-.card-body{
-  padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1;
-}
-.card-game{
-  font-size:9px;font-weight:800;letter-spacing:3px;text-transform:uppercase;
-  color:var(--c,#f59e0b);
-}
+.card-body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:7px;flex:1}
+.card-game{font-size:9px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--c,#f59e0b)}
 .card-title{
-  font-family:'Russo One',sans-serif;font-size:17px;letter-spacing:.3px;
+  font-family:'Russo One',sans-serif;font-size:18px;letter-spacing:.3px;
   color:#fff;line-height:1.2;
 }
-.card-desc{
-  font-size:13px;color:var(--muted);line-height:1.6;font-weight:600;flex:1;
-}
-
-/* ─── DOWNLOAD BUTTON ─── */
+.card-desc{font-size:13px;color:var(--muted2);line-height:1.65;font-weight:500;flex:1}
 .dl-btn{
   display:flex;align-items:center;justify-content:center;gap:9px;
-  margin-top:14px;padding:13px 20px;
+  margin-top:16px;padding:13px 20px;
   background:linear-gradient(135deg,#22c55e,#16a34a);
-  color:#fff;border:none;border-radius:8px;
-  font-family:'Russo One',sans-serif;font-size:13px;letter-spacing:2px;
-  text-transform:uppercase;cursor:pointer;
-  transition:all .2s;position:relative;overflow:hidden;
-  box-shadow:0 4px 20px rgba(34,197,94,0.25);
+  color:#fff;border:none;border-radius:9px;
+  font-family:'Russo One',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;
+  cursor:pointer;transition:all .2s;position:relative;overflow:hidden;
+  box-shadow:0 4px 22px rgba(34,197,94,0.22);
 }
 .dl-btn::before{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,0.12),transparent 60%);
-  pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,0.1),transparent 60%);pointer-events:none;
 }
-.dl-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 32px rgba(34,197,94,0.38);
-}
-.dl-btn:active{transform:translateY(0) scale(.98)}
-.dl-btn.fired{
-  background:linear-gradient(135deg,#f59e0b,#d97706);
-  box-shadow:0 4px 20px rgba(245,158,11,0.35);
-}
-.dl-arrow{font-size:16px;transition:transform .2s}
+.dl-btn:hover{transform:translateY(-2px);box-shadow:0 8px 34px rgba(34,197,94,0.36)}
+.dl-btn:active{transform:scale(.98)}
+.dl-btn.fired{background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 4px 22px rgba(245,158,11,0.3)}
+.dl-arrow{font-size:15px;transition:transform .2s}
 .dl-btn:hover .dl-arrow{transform:translateY(2px)}
-
 /* ripple */
 .ripple{
-  position:absolute;border-radius:50%;
-  background:rgba(255,255,255,0.25);pointer-events:none;
-  transform:scale(0);animation:rippleOut .55s ease-out forwards;
+  position:absolute;border-radius:50%;background:rgba(255,255,255,0.22);
+  pointer-events:none;transform:scale(0);animation:rippleOut .55s ease-out forwards;
 }
-@keyframes rippleOut{to{transform:scale(4);opacity:0}}
+@keyframes rippleOut{to{transform:scale(5);opacity:0}}
 
-/* ─── EMPTY ─── */
-#emptyState{
-  display:none;text-align:center;padding:100px 20px;color:var(--muted);
-  grid-column:1/-1;
+/* EMPTY STATE */
+.empty-state{
+  text-align:center;padding:100px 20px;color:var(--muted);
+  grid-column:1/-1;display:none;
 }
-#emptyState .empty-glyph{font-size:54px;margin-bottom:18px;display:block}
-#emptyState p{font-family:'Russo One',sans-serif;font-size:14px;letter-spacing:3px}
+.empty-state .e-icon{font-size:52px;margin-bottom:16px;display:block}
+.empty-state p{
+  font-family:'Russo One',sans-serif;font-size:14px;letter-spacing:3px;
+}
 
-/* ─── MOBILE DRAWER ─── */
-#drawer{
-  position:fixed;left:-100%;top:0;bottom:0;width:280px;
-  background:rgba(13,15,24,0.97);backdrop-filter:blur(24px);
-  border-right:1px solid rgba(245,158,11,0.1);
-  padding:24px 16px;transition:left .25s cubic-bezier(.25,.46,.45,.94);
-  z-index:300;overflow-y:auto;
-}
-#drawer.open{left:0}
-#overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.75);
-  opacity:0;pointer-events:none;transition:opacity .25s;z-index:290;
-}
-#overlay.open{opacity:1;pointer-events:auto}
-.drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-.drawer-logo{
-  font-family:'Russo One',sans-serif;font-size:19px;letter-spacing:3px;
-  color:var(--gold);text-shadow:0 0 16px rgba(245,158,11,0.4);
-}
-.drawer-x{
-  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
-  color:var(--muted);font-size:18px;cursor:pointer;
-  width:36px;height:36px;display:grid;place-items:center;border-radius:8px;
-  transition:color .15s,border-color .15s;
-}
-.drawer-x:hover{color:var(--gold);border-color:rgba(245,158,11,0.3)}
-.drawer-section{
-  font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;
-  color:var(--muted);padding:0 8px;margin-bottom:12px;
-}
-.drawer-btn{
-  width:100%;text-align:left;padding:11px 14px;border-radius:8px;
-  border:none;background:none;color:var(--muted);
-  font-family:'Exo 2',sans-serif;font-size:14px;font-weight:700;
-  cursor:pointer;margin-bottom:4px;transition:all .15s;
-  display:flex;align-items:center;gap:10px;
-}
-.drawer-btn:hover{background:rgba(255,255,255,0.04);color:var(--text)}
-.drawer-btn.active{
-  background:rgba(245,158,11,0.1);color:var(--gold);
-  border:1px solid rgba(245,158,11,0.2);
-}
-.drawer-btn .d-count{
-  margin-left:auto;font-size:10px;font-weight:800;
-  background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:999px;color:var(--muted);
-}
-.drawer-btn.active .d-count{background:rgba(245,158,11,0.15);color:var(--gold)}
-
-/* ─── FOOTER ─── */
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
 footer{
-  position:relative;z-index:1;
-  border-top:1px solid rgba(255,255,255,0.05);
-  padding:28px 20px;text-align:center;
+  position:relative;z-index:2;
+  background:var(--bg2);
+  border-top:1px solid rgba(255,255,255,0.06);
 }
-footer p{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:1px}
+.footer-inner{
+  max-width:var(--maxw);margin:0 auto;
+  padding:60px 24px 40px;
+  display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:40px;
+}
+.footer-brand{}
+.footer-logo{
+  font-family:'Russo One',sans-serif;font-size:20px;letter-spacing:4px;
+  color:var(--gold);text-shadow:0 0 24px rgba(245,158,11,0.4);
+  margin-bottom:14px;
+}
+.footer-tagline{font-size:13px;color:var(--muted);line-height:1.65;font-weight:500;max-width:220px}
+.footer-social{display:flex;gap:10px;margin-top:20px}
+.footer-social a{
+  width:36px;height:36px;border-radius:8px;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+  display:grid;place-items:center;font-size:16px;cursor:pointer;
+  transition:background .15s,border-color .15s;text-decoration:none;
+}
+.footer-social a:hover{background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.25)}
 
-/* ─── RESPONSIVE ─── */
+.footer-col h4{
+  font-family:'Russo One',sans-serif;font-size:12px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:18px;
+}
+.footer-col a{
+  display:block;font-size:13px;color:var(--muted2);font-weight:600;
+  margin-bottom:10px;cursor:pointer;transition:color .15s;text-decoration:none;
+}
+.footer-col a:hover{color:var(--text)}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,0.05);
+  padding:20px 24px;
+  max-width:var(--maxw);margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+.footer-bottom p{font-size:12px;color:var(--muted);font-weight:500}
+.footer-badges{display:flex;gap:8px;flex-wrap:wrap}
+.f-badge{
+  font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 12px;
+  border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  color:var(--muted);text-transform:uppercase;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:1024px){
+  .trust-bar{grid-template-columns:repeat(2,1fr)}
+  .games-grid{grid-template-columns:repeat(5,1fr)}
+  .footer-inner{grid-template-columns:1fr 1fr}
+}
 @media(max-width:900px){
-  .hero{grid-template-columns:1fr;gap:28px}
-  .hero-right{display:none}
-  .hero-h1{font-size:40px}
+  .hero{grid-template-columns:1fr;gap:40px;padding:50px 24px 40px}
+  .hero-mosaic{display:none}
+  .hero-h1{font-size:48px}
+  .featured-grid{grid-template-columns:1fr}
+  .steps-grid{grid-template-columns:1fr}
+  .step{border-right:none;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .step:last-child{border-bottom:none}
+  .hiw-steps{grid-template-columns:1fr}
+  .games-grid{grid-template-columns:repeat(3,1fr)}
 }
-@media(max-width:680px){
-  :root{--header-h:56px;--pills-h:50px}
+@media(max-width:700px){
+  :root{--nav-h:58px}
+  .nav-links,.nav-search,.nav-cta{display:none}
   .ham-btn{display:flex}
-  .search-wrap{max-width:none}
-  .grid{grid-template-columns:1fr}
-  .hero-h1{font-size:34px}
+  .nav-inner{justify-content:space-between}
+  .hero-h1{font-size:38px}
+  .trust-bar{grid-template-columns:1fr}
+  .footer-inner{grid-template-columns:1fr;gap:28px}
+  .footer-col:nth-child(2),.footer-col:nth-child(3){display:none}
+  .games-grid{grid-template-columns:repeat(2,1fr)}
+  .mods-grid{grid-template-columns:1fr}
   .hero-stats{gap:16px}
-  .stat-num{font-size:22px}
-  .logo{font-size:18px}
+  .stat-n{font-size:24px}
 }
-@media(max-width:380px){
-  .hero-h1{font-size:28px}
+@media(max-width:420px){
+  .hero-h1{font-size:30px}
+  .hiw-hero h1,.faq-hero h1{font-size:28px}
+  .mods-title{font-size:22px}
 }
 </style>
 </head>
 <body>
 
 <!-- BACKGROUND -->
-<div class="bg-blobs">
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="blob blob-3"></div>
-  <div class="blob blob-4"></div>
+<div class="bg-canvas">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
 </div>
 <div class="bg-grid"></div>
 
-<!-- HEADER -->
-<header>
-  <div class="top">
-    <div class="logo">MODVAULT<sup>free</sup></div>
-    <div class="search-wrap">
-      <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-      </svg>
-      <input id="searchInput" type="text" placeholder="Search mods or games..." autocomplete="off">
+<!-- ══════ NAV ══════ -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" onclick="showSection('home')">MODVAULT<span>free</span></a>
+    <div class="nav-links">
+      <button class="nav-link active" id="nl-home" onclick="showSection('home')">Home</button>
+      <button class="nav-link" id="nl-mods" onclick="showSection('mods')">All Mods</button>
+      <button class="nav-link" id="nl-how" onclick="showSection('how')">How It Works</button>
+      <button class="nav-link" id="nl-faq" onclick="showSection('faq')">FAQ</button>
     </div>
-    <button class="ham-btn" id="ham" aria-label="Menu">☰</button>
+    <div class="nav-right">
+      <div class="nav-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input id="navSearch" type="text" placeholder="Search mods..." autocomplete="off">
+      </div>
+      <button class="nav-cta" onclick="showSection('mods')">⬇ GET MODS</button>
+    </div>
+    <button class="ham-btn" id="ham">☰</button>
   </div>
-</header>
+</nav>
 
-<!-- FILTER PILLS -->
-<div class="pills-bar">
-  <div class="pills-inner" id="pillsList"></div>
-</div>
-
-<!-- MOBILE DRAWER -->
+<!-- ══════ MOBILE DRAWER ══════ -->
 <div id="overlay"></div>
 <aside id="drawer">
-  <div class="drawer-head">
+  <div class="drawer-top">
     <div class="drawer-logo">MODVAULT</div>
-    <button class="drawer-x" id="drawerClose">✕</button>
+    <button class="drawer-close" id="drawerClose">✕</button>
   </div>
-  <div class="drawer-section">All Games</div>
-  <div id="drawerList"></div>
+  <div class="drawer-search">
+    <input id="drawerSearch" type="text" placeholder="Search mods..." autocomplete="off">
+  </div>
+  <div class="drawer-nav">
+    <div class="drawer-nav-label">Navigation</div>
+    <button class="drawer-nav-link active" id="dnl-home" onclick="showSection('home');closeDrawer()"><span class="drawer-nav-icon">🏠</span>Home</button>
+    <button class="drawer-nav-link" id="dnl-mods" onclick="showSection('mods');closeDrawer()"><span class="drawer-nav-icon">🎮</span>All Mods</button>
+    <button class="drawer-nav-link" id="dnl-how" onclick="showSection('how');closeDrawer()"><span class="drawer-nav-icon">❓</span>How It Works</button>
+    <button class="drawer-nav-link" id="dnl-faq" onclick="showSection('faq');closeDrawer()"><span class="drawer-nav-icon">💬</span>FAQ</button>
+  </div>
+  <div class="drawer-games">
+    <div class="drawer-games-label">Browse by Game</div>
+    <div id="drawerGameList"></div>
+  </div>
 </aside>
 
-<!-- PAGE BODY -->
-<div class="page-body">
+<!-- ══════ PAGE ══════ -->
+<div class="page">
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-left">
-      <div class="hero-eyebrow">No Surveys. No Limits.</div>
-      <h1 class="hero-h1">UNLOCK<br>EVERY<span class="gold">MOD.</span></h1>
-      <p class="hero-sub">The largest collection of free mobile game mods, cheats, and unlocked APKs — updated 2026.</p>
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-num">10+</span>
-          <span class="stat-label">Games</span>
+  <!-- ── HOME ── -->
+  <section id="sec-home" class="visible">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-left">
+        <div class="hero-eyebrow">No surveys. No limits. 100% Free.</div>
+        <h1 class="hero-h1">UNLOCK<br>EVERY<em>MOD.</em></h1>
+        <p class="hero-sub">The #1 source for free mobile game mods, unlocked APKs, and cheats in 2026. Browse 10+ games and get instant access — no payments, ever.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="showSection('mods')">⬇ Browse All Mods</button>
+          <button class="btn-secondary" onclick="showSection('how')">How It Works →</button>
         </div>
-        <div class="hero-divider"></div>
-        <div class="stat">
-          <span class="stat-num">100%</span>
-          <span class="stat-label">Free</span>
+        <div class="hero-stats">
+          <div class="stat-item"><span class="stat-n">10+</span><span class="stat-l">Games</span></div>
+          <div class="stat-sep"></div>
+          <div class="stat-item"><span class="stat-n">100%</span><span class="stat-l">Free</span></div>
+          <div class="stat-sep"></div>
+          <div class="stat-item"><span class="stat-n">⚡</span><span class="stat-l">Instant</span></div>
+          <div class="stat-sep"></div>
+          <div class="stat-item"><span class="stat-n">2026</span><span class="stat-l">Updated</span></div>
         </div>
-        <div class="hero-divider"></div>
-        <div class="stat">
-          <span class="stat-num">⚡</span>
-          <span class="stat-label">Instant</span>
+      </div>
+      <div class="hero-mosaic" id="heroMosaic"></div>
+    </div>
+
+    <!-- MARQUEE -->
+    <div class="marquee-wrap">
+      <div class="marquee-track" id="marqueeTrack"></div>
+    </div>
+
+    <!-- TRUST BAR -->
+    <div class="trust-bar">
+      <div class="trust-card"><div class="trust-icon">🔓</div><div class="trust-text"><strong>100% Free</strong><span>No hidden fees ever</span></div></div>
+      <div class="trust-card"><div class="trust-icon">⚡</div><div class="trust-text"><strong>Instant Access</strong><span>Download in seconds</span></div></div>
+      <div class="trust-card"><div class="trust-icon">📱</div><div class="trust-text"><strong>Mobile Ready</strong><span>Android & iOS mods</span></div></div>
+      <div class="trust-card"><div class="trust-icon">🔄</div><div class="trust-text"><strong>Always Updated</strong><span>Fresh mods for 2026</span></div></div>
+    </div>
+
+    <!-- FEATURED MODS -->
+    <div class="section-header">
+      <div>
+        <div class="section-label">🔥 Top Picks</div>
+        <div class="section-title">Featured Mods</div>
+      </div>
+      <div class="section-link" onclick="showSection('mods')">View all mods →</div>
+    </div>
+    <div class="featured-grid" id="featuredGrid"></div>
+
+    <!-- POPULAR GAMES -->
+    <div class="section-header">
+      <div>
+        <div class="section-label">🎮 Categories</div>
+        <div class="section-title">Browse by Game</div>
+      </div>
+    </div>
+    <div class="games-grid" id="gamesGrid"></div>
+
+    <!-- HOW IT WORKS (preview) -->
+    <div class="section-header">
+      <div>
+        <div class="section-label">📖 Guide</div>
+        <div class="section-title">How It Works</div>
+      </div>
+      <div class="section-link" onclick="showSection('how')">Full guide →</div>
+    </div>
+    <div class="how-section">
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-num">01</div>
+          <span class="step-icon">🔍</span>
+          <div class="step-title">Browse the Vault</div>
+          <div class="step-desc">Pick any game from our catalog. Use the search or filter to find the exact mod you want.</div>
         </div>
-        <div class="hero-divider"></div>
-        <div class="stat">
-          <span class="stat-num">📱</span>
-          <span class="stat-label">Mobile</span>
+        <div class="step">
+          <div class="step-num">02</div>
+          <span class="step-icon">📲</span>
+          <div class="step-title">Click Free Download</div>
+          <div class="step-desc">Hit the green button on any mod card. A quick verification step keeps downloads safe and free.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <span class="step-icon">🎮</span>
+          <div class="step-title">Play Unlocked</div>
+          <div class="step-desc">Install and launch. All features, currencies, and premium content are instantly available.</div>
         </div>
       </div>
     </div>
-    <div class="hero-right" id="heroTiles"></div>
+
+    <!-- SPACER -->
+    <div style="height:60px"></div>
+
   </section>
 
-  <!-- MOD GRID -->
-  <section class="main">
-    <div class="section-bar">
-      <span class="section-title" id="sectionTitle">ALL MODS</span>
-      <span class="section-count" id="sectionCount"></span>
+  <!-- ── MODS ── -->
+  <section id="sec-mods">
+    <div class="mods-top">
+      <div class="mods-title" id="modsTitle">All Mods</div>
+      <div class="mods-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input id="modsSearch" type="text" placeholder="Search mods or games..." autocomplete="off">
+      </div>
     </div>
-    <div class="grid" id="grid"></div>
-    <div id="emptyState">
-      <span class="empty-glyph">🎮</span>
-      <p>No mods found — try a different search</p>
+    <div class="pills-row" id="pillsRow"></div>
+    <div class="mods-grid-wrap">
+      <div class="mods-grid" id="modsGrid"></div>
+      <div class="empty-state" id="emptyState">
+        <span class="e-icon">🎮</span>
+        <p>No mods found — try a different search</p>
+      </div>
     </div>
   </section>
-</div>
 
+  <!-- ── HOW IT WORKS ── -->
+  <section id="sec-how">
+    <div class="hiw-hero">
+      <div class="section-label">📖 Guide</div>
+      <h1>How ModVault Works</h1>
+      <p>Getting a free game mod takes under 60 seconds. Here's exactly what happens when you click download.</p>
+    </div>
+    <div class="hiw-steps">
+      <div class="hiw-step">
+        <div class="hiw-step-num">01</div>
+        <span class="hiw-step-icon">🔍</span>
+        <div class="hiw-step-title">Browse the Vault</div>
+        <div class="hiw-step-desc">Use the <strong>All Mods</strong> page to browse our full catalog. Filter by game or search for a specific mod. Each card shows exactly what's included — currencies, unlocks, skins, and more.</div>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-step-num">02</div>
+        <span class="hiw-step-icon">✅</span>
+        <div class="hiw-step-title">Complete the Verification</div>
+        <div class="hiw-step-desc">Clicking <strong>Free Download</strong> takes you to a short verification step. This is how we keep the mods free — a quick sponsor offer that takes under a minute. No credit card needed.</div>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-step-num">03</div>
+        <span class="hiw-step-icon">📲</span>
+        <div class="hiw-step-title">Install & Play</div>
+        <div class="hiw-step-desc">After verification your download starts automatically. Install the APK on Android, follow any on-screen steps, and launch your game with everything already unlocked.</div>
+      </div>
+    </div>
+    <div class="hiw-warning">
+      <div class="hiw-notice">
+        <div class="hiw-notice-icon">💡</div>
+        <div class="hiw-notice-text">
+          <strong>Tips for fastest access</strong>
+          <p>Use a mobile browser for the smoothest experience. If an offer page loads, complete it fully before closing — it usually takes 30–60 seconds. All mods on ModVault are tested and verified before listing. If you run into any issues, try a different offer on the same page.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ── -->
+  <section id="sec-faq">
+    <div class="faq-hero">
+      <div class="section-label">💬 FAQ</div>
+      <h1>Frequently Asked Questions</h1>
+      <p>Everything you need to know about ModVault and downloading free game mods.</p>
+    </div>
+    <div class="faq-list" id="faqList"></div>
+  </section>
+
+</div><!-- end .page -->
+
+<!-- ══════ FOOTER ══════ -->
 <footer>
-  <p>ModVault &copy; 2026 — Free Game Mods &amp; Unlocked APKs</p>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">MODVAULT</div>
+      <p class="footer-tagline">The #1 free source for mobile game mods, cheats, and unlocked APKs. Updated for 2026.</p>
+      <div class="footer-social">
+        <a title="TikTok">🎵</a>
+        <a title="YouTube">▶️</a>
+        <a title="Discord">💬</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <a onclick="showSection('home')">Home</a>
+      <a onclick="showSection('mods')">All Mods</a>
+      <a onclick="showSection('how')">How It Works</a>
+      <a onclick="showSection('faq')">FAQ</a>
+    </div>
+    <div class="footer-col">
+      <h4>Games</h4>
+      <div id="footerGameLinks"></div>
+    </div>
+    <div class="footer-col">
+      <h4>About</h4>
+      <a>About ModVault</a>
+      <a>Privacy Policy</a>
+      <a>Terms of Use</a>
+      <a>DMCA</a>
+      <a>Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 ModVault — Free Game Mods &amp; Unlocked APKs. All rights reserved.</p>
+    <div class="footer-badges">
+      <span class="f-badge">✓ Free Forever</span>
+      <span class="f-badge">📱 Mobile First</span>
+      <span class="f-badge">⚡ Updated 2026</span>
+    </div>
+  </div>
 </footer>
 
 <script>
 /* ════════════════════════════════════════
-   MODS DATA
+   DATA
 ════════════════════════════════════════ */
 var MODS=[
-  {id:"gta1",  game:"GTA San Andreas",    emoji:"🚗", color:"#ef4444",
+  {id:"gta1",  game:"GTA San Andreas",    emoji:"🚗",color:"#ef4444",featured:true,
    title:"GTA San Andreas Mod Menu",
    description:"Spawn cars, fly, God mode, unlimited ammo — the ultimate mod menu for GTA SA mobile.",
    image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/gta_san_andreas_apk_by_hot51mod_dii4ana-125s-2x.jpg",
    download:"https://redirectapps.org/cl/i/5ne7o1"},
 
-  {id:"mc1",   game:"Minecraft",          emoji:"⛏️", color:"#84cc16",
+  {id:"mc1",   game:"Minecraft",          emoji:"⛏️",color:"#84cc16",featured:true,
    title:"Minecraft Skins & Mods Pack",
    description:"Best skin packs and structure mods — completely transform how Minecraft looks and plays.",
    image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/minecraft-1639513933156.jpg",
    download:"https://applocked.org/cl/i/xp6jmv"},
 
-  {id:"DLS",   game:"Dream League Soccer",emoji:"⚽", color:"#06b6d4",
+  {id:"brawl", game:"Brawl Stars",        emoji:"💥",color:"#8b5cf6",featured:true,
+   title:"Brawl Stars Mod",
+   description:"Unlock every brawler and collect resources instantly — massively boosted start guaranteed.",
+   image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-23-42-05-Brawl_Stars_Logo_2018_present.png",
+   download:"https://redirectapps.org/cl/i/rn73dl"},
+
+  {id:"DLS",   game:"Dream League Soccer",emoji:"⚽",color:"#06b6d4",
    title:"Dream League Money Mod",
    description:"Infinite coins — unlock every upgrade, kit, and world-class player from the start.",
    image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-17-04-56-60xiiOFbPnCXbWZ2fL_4Dx2aUkT8ojIqwNec_qmoTzOL52L_mVVFev_WD6AKekAI5YPa.jpg",
@@ -557,169 +1061,288 @@ var MODS=[
    image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/Untitled%20design_20251202_171332_0000.png",
    download:"https://lockedapp.org/cl/i/qnkrv6"},
 
-  {id:"ark",   game:"ARK Mobile",         emoji:"🦕", color:"#a855f7",
+  {id:"ark",   game:"ARK Mobile",         emoji:"🦕",color:"#a855f7",
    title:"ARK Mobile Skins & Mods",
    description:"Play ARK mobile with exclusive skins, mods, and all premium features fully unlocked.",
    image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-18-18-26-00fd8af896bab591d677f03939f07e7c.jpg",
    download:"https://lockedapp.org/cl/i/ex655m"},
 
-  {id:"8ball", game:"8 Ball Pool",        emoji:"🎱", color:"#14b8a6",
+  {id:"8ball", game:"8 Ball Pool",        emoji:"🎱",color:"#14b8a6",
    title:"8 Ball Pool Skins & Mods",
-   description:"Unique cue and table skins, special modes, and built-in aim assist — dominate every match.",
+   description:"Unique cue and table skins, special modes, and aim assist — dominate every match.",
    image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/refs/heads/main/2025-12-02-18-46-35-696c8a24_41e9_4d07_8996_30f1bcbef5a4.jpg",
    download:"https://redirectapps.org/cl/i/5nkvek"},
 
-  {id:"ef",    game:"eFootball",          emoji:"🏆", color:"#3b82f6",
+  {id:"ef",    game:"eFootball",          emoji:"🏆",color:"#3b82f6",
    title:"eFootball Money Mod",
    description:"Faster progression, easier rewards, and smoother gameplay — all unlocked for free.",
    image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-21-32-06-main_page_1_sp.png",
    download:"https://redirectapps.org/cl/i/6nd86v"},
 
-  {id:"parchisi",game:"Parchisi Star",    emoji:"🎲", color:"#f59e0b",
+  {id:"parchisi",game:"Parchisi Star",    emoji:"🎲",color:"#f59e0b",
    title:"Parchisi Star Mod",
    description:"Start with billions of coins and gems — premium experience from the very first roll.",
    image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-22-51-12-aurUWpDZe7mDZ21v3lWlRd_p_ittowLWfL7Oo_ov6rhwnGIUG_xuF1sXBqDNZ8kWt20.jpg",
    download:"https://applocked.org/cl/i/qnkme6"},
 
-  {id:"bitlife",game:"BitLife",           emoji:"👤", color:"#ec4899",
+  {id:"bitlife",game:"BitLife",           emoji:"👤",color:"#ec4899",
    title:"BitLife — All Unlocked",
-   description:"Bitizenship, special jobs, business mode — every premium feature fully unlocked for free.",
+   description:"Bitizenship, special jobs, business mode — every premium feature fully unlocked.",
    image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/Bitlife%20mod_20251202_224537_0000.png",
-   download:"https://redirectapps.org/cl/i/7jdejv"},
+   download:"https://redirectapps.org/cl/i/7jdejv"}
+];
 
-  {id:"brawl", game:"Brawl Stars",        emoji:"💥", color:"#8b5cf6",
-   title:"Brawl Stars Mod",
-   description:"Unlock every brawler and collect resources instantly — massively boosted start guaranteed.",
-   image:"https://raw.githubusercontent.com/intisaro2200-art/Gaming-site/main/2025-12-02-23-42-05-Brawl_Stars_Logo_2018_present.png",
-   download:"https://redirectapps.org/cl/i/rn73dl"}
+var FAQS=[
+  {q:"Are the mods really free?",a:"Yes, 100% free. ModVault earns through a short sponsor verification when you download — that's how we keep everything free for users. No credit card, no subscription, ever."},
+  {q:"Is it safe to download mods from ModVault?",a:"Every mod listed on ModVault is sourced and tested before publishing. We don't host files directly — downloads go through verified partner links. Use at your own discretion on a secondary device if you're cautious."},
+  {q:"Why do I need to complete a verification step?",a:"The verification step (sponsored offer) is how we fund the service and keep all mods free. It usually takes 30–60 seconds. Without it, we couldn't maintain ModVault at no cost to users."},
+  {q:"Do mods work on iOS and Android?",a:"Most mods here are Android APKs. iOS mods are more limited due to Apple's restrictions. Check each mod card — we note when something is platform-specific."},
+  {q:"Will I get banned for using mods?",a:"Some games can detect modified clients and issue bans. We recommend using mods on a secondary account in online games. Offline mods like GTA San Andreas and ARK Mobile carry zero risk."},
+  {q:"How often are mods updated?",a:"We review and update mods regularly throughout 2026 to ensure compatibility with the latest game versions. If a mod stops working, check back — an update is usually on the way."},
+  {q:"Can I request a game mod?",a:"Absolutely. Use the contact link in the footer to suggest a game. Popular requests get prioritized for the next update cycle."},
+  {q:"What if the download link doesn't work?",a:"Try refreshing the page and clicking again. If a specific offer on the verification page doesn't load, try a different one on the same page. Most issues resolve within 24 hours."}
 ];
 
 /* ════════════════════════════════════════
-   STATE & ROUTING
+   ROUTING
 ════════════════════════════════════════ */
-var activeGame='All';
+var currentSection='home';
+var currentFilter='All';
 
-function getHashGame(){
-  var h=decodeURIComponent(location.hash.replace('#',''));
-  if(!h||h==='all')return'All';
-  var found=MODS.find(function(m){return m.game===h});
-  return found?h:'All';
-}
+function showSection(id,push){
+  if(push===undefined)push=true;
 
-function pushState(game){
-  var hash=game==='All'?'#all':'#'+encodeURIComponent(game);
-  history.pushState({game:game},'',hash);
+  // Hide all
+  document.querySelectorAll('.page section').forEach(function(s){s.classList.remove('visible')});
+  document.getElementById('sec-'+id).classList.add('visible');
+
+  // Nav highlight
+  ['home','mods','how','faq'].forEach(function(k){
+    var el=document.getElementById('nl-'+k);
+    var del=document.getElementById('dnl-'+k);
+    if(el)el.classList.toggle('active',k===id);
+    if(del)del.classList.toggle('active',k===id);
+  });
+
+  currentSection=id;
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(push)history.pushState({section:id,filter:currentFilter},'','#'+id);
 }
 
 window.addEventListener('popstate',function(e){
-  var game=(e.state&&e.state.game)||getHashGame();
-  applyFilter(game,false);
+  if(e.state&&e.state.section){
+    showSection(e.state.section,false);
+    if(e.state.section==='mods'&&e.state.filter){
+      applyFilter(e.state.filter,false);
+    }
+  } else {
+    var h=location.hash.replace('#','');
+    var valid=['home','mods','how','faq'];
+    showSection(valid.indexOf(h)>-1?h:'home',false);
+  }
 });
 
 /* ════════════════════════════════════════
-   BUILD UI
+   BUILD HOME
 ════════════════════════════════════════ */
-var gameNames=['All'].concat(MODS.map(function(m){return m.game}));
-var gameCounts={All:MODS.length};
-MODS.forEach(function(m){gameCounts[m.game]=(gameCounts[m.game]||0)+1});
-var gameMap={};
-MODS.forEach(function(m){gameMap[m.game]=m});
-
-function esc(s){return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
-
-function buildPills(){
-  document.getElementById('pillsList').innerHTML=gameNames.map(function(g){
-    var mod=gameMap[g];
-    var icon=g==='All'?'🎮':(mod?mod.emoji:'');
-    var active=g===activeGame?'active':'';
-    return'<button class="pill '+active+'" onclick="filterGame(\''+esc(g)+'\')">'
-      +'<span class="pill-icon">'+icon+'</span>'
-      +(g==='All'?'All':g)
-      +'<span class="pill-count">'+gameCounts[g]+'</span>'
-      +'</button>';
-  }).join('');
-}
-
-function buildDrawer(){
-  document.getElementById('drawerList').innerHTML=gameNames.map(function(g){
-    var mod=gameMap[g];
-    var icon=g==='All'?'🎮':(mod?mod.emoji:'');
-    var active=g===activeGame?'active':'';
-    return'<button class="drawer-btn '+active+'" onclick="mobileFilter(\''+esc(g)+'\')">'
-      +icon+' '+(g==='All'?'All Mods':g)
-      +'<span class="d-count">'+gameCounts[g]+'</span>'
-      +'</button>';
-  }).join('');
-}
-
-function buildHeroTiles(){
+function buildMosaic(){
   var picks=MODS.slice(0,3);
-  document.getElementById('heroTiles').innerHTML=picks.map(function(m,i){
-    return'<div class="hero-tile'+(i===0?' wide':'')+'">'+
-      '<img src="'+m.image+'" alt="'+m.title+'" loading="lazy" onerror="this.src=\'https://placehold.co/400x200/0e1119/f59e0b?text=Game\'">'+
-      '<div class="hero-tile-overlay"></div>'+
-      '<div class="hero-tile-label">'+
-        '<span class="hero-tile-tag">'+m.emoji+' '+m.game+'</span>'+
-        m.title+
+  document.getElementById('heroMosaic').innerHTML=picks.map(function(m,i){
+    return'<div class="mosaic-tile'+(i===0?' wide':'')+'">'+
+      '<img src="'+m.image+'" alt="'+m.title+'" loading="lazy">'+
+      '<div class="mosaic-overlay"></div>'+
+      '<div class="mosaic-label">'+
+        '<span class="mosaic-game">'+m.emoji+' '+m.game+'</span>'+
+        '<span>'+m.title+'</span>'+
       '</div>'+
     '</div>';
   }).join('');
 }
 
-function renderGrid(list){
-  var grid=document.getElementById('grid');
-  var empty=document.getElementById('emptyState');
-  document.getElementById('sectionCount').textContent=
-    list.length?(list.length+' mod'+(list.length!==1?'s':'')):'';
-  if(!list.length){grid.innerHTML='';empty.style.display='block';return}
-  empty.style.display='none';
-  grid.innerHTML=list.map(function(m){
-    return'<article class="card" style="--c:'+m.color+'">'+
-      '<div class="card-img">'+
-        '<img src="'+m.image+'" alt="'+m.title+'" loading="lazy" '+
-          'onerror="this.src=\'https://placehold.co/400x225/0e1119/'+m.color.slice(1)+'?text='+encodeURIComponent(m.game)+'\'">'+
-        '<div class="card-img-overlay"></div>'+
-        '<span class="card-badge">'+m.emoji+' '+m.game+'</span>'+
-        '<span class="card-free">✓ FREE</span>'+
-      '</div>'+
-      '<div class="card-body">'+
-        '<div class="card-game">'+m.game+'</div>'+
-        '<div class="card-title">'+m.title+'</div>'+
-        '<p class="card-desc">'+m.description+'</p>'+
-        '<button class="dl-btn" onclick="handleDownload(\''+m.download+'\',this)">'+
-          '<span class="dl-arrow">⬇</span> FREE DOWNLOAD'+
-        '</button>'+
-      '</div>'+
-    '</article>';
+function buildMarquee(){
+  var items=MODS.map(function(m){
+    return'<span class="marquee-item"><span class="marquee-dot"></span>'+m.emoji+' '+m.title+'</span>';
   }).join('');
+  document.getElementById('marqueeTrack').innerHTML=items+items;
+}
 
-  // 3D tilt on non-touch devices
-  if(!('ontouchstart' in window)){
-    grid.querySelectorAll('.card').forEach(initTilt);
+function buildFeatured(){
+  var featured=MODS.filter(function(m){return m.featured});
+  document.getElementById('featuredGrid').innerHTML=featured.map(function(m){
+    return cardHTML(m);
+  }).join('');
+  if(!('ontouchstart' in window))
+    document.querySelectorAll('#featuredGrid .card').forEach(initTilt);
+}
+
+function buildGameChips(){
+  var games=MODS.map(function(m){return m});
+  document.getElementById('gamesGrid').innerHTML=games.map(function(m){
+    return'<div class="game-chip" onclick="goMod(\''+esc(m.game)+'\')">'+
+      '<span class="game-chip-icon">'+m.emoji+'</span>'+
+      '<span class="game-chip-name">'+m.game+'</span>'+
+      '<span class="game-chip-count">1 Mod</span>'+
+    '</div>';
+  }).join('');
+}
+
+function buildFooterLinks(){
+  document.getElementById('footerGameLinks').innerHTML=MODS.map(function(m){
+    return'<a onclick="goMod(\''+esc(m.game)+'\')">'+m.emoji+' '+m.game+'</a>';
+  }).join('');
+}
+
+function goMod(game){
+  currentFilter=game;
+  showSection('mods');
+  applyFilter(game,false);
+}
+
+/* ════════════════════════════════════════
+   BUILD MODS PAGE
+════════════════════════════════════════ */
+var gameNames=['All'].concat(MODS.map(function(m){return m.game}));
+var gameCounts={All:MODS.length};
+MODS.forEach(function(m){gameCounts[m.game]=(gameCounts[m.game]||0)+1});
+
+function buildPills(){
+  document.getElementById('pillsRow').innerHTML=gameNames.map(function(g){
+    var m=MODS.find(function(x){return x.game===g});
+    var icon=g==='All'?'🎮':(m?m.emoji:'');
+    return'<button class="pill '+(g===currentFilter?'active':'')+'" onclick="applyFilter(\''+esc(g)+'\')">'+
+      icon+' '+(g==='All'?'All':g)+
+      '<span class="p-count">'+gameCounts[g]+'</span>'+
+    '</button>';
+  }).join('');
+}
+
+function buildDrawerGames(){
+  document.getElementById('drawerGameList').innerHTML=gameNames.map(function(g){
+    var m=MODS.find(function(x){return x.game===g});
+    var icon=g==='All'?'🎮':(m?m.emoji:'');
+    return'<button class="drawer-game-btn '+(g===currentFilter?'active':'')+'" onclick="goMod(\''+esc(g)+'\');closeDrawer()">'+
+      icon+' '+(g==='All'?'All Mods':g)+
+      '<span class="d-count">'+gameCounts[g]+'</span>'+
+    '</button>';
+  }).join('');
+}
+
+function renderModGrid(list){
+  var grid=document.getElementById('modsGrid');
+  var empty=document.getElementById('emptyState');
+  if(!list.length){
+    grid.innerHTML='';
+    empty.style.display='block';
+    return;
   }
+  empty.style.display='none';
+  grid.innerHTML=list.map(function(m){return cardHTML(m)}).join('');
+  if(!('ontouchstart' in window))
+    grid.querySelectorAll('.card').forEach(initTilt);
 }
 
 function applyFilter(game,push){
   if(push===undefined)push=true;
-  activeGame=game;
-  document.getElementById('sectionTitle').textContent=
-    game==='All'?'ALL MODS':game.toUpperCase()+' MODS';
+  currentFilter=game;
+  document.getElementById('modsTitle').textContent=game==='All'?'All Mods':game+' Mods';
   buildPills();
-  buildDrawer();
+  buildDrawerGames();
   var list=game==='All'?MODS:MODS.filter(function(m){return m.game===game});
-  renderGrid(list);
-  if(push)pushState(game);
+  renderModGrid(list);
+  if(push)history.pushState({section:'mods',filter:game},'','#mods');
 }
 
-function filterGame(game){applyFilter(game)}
-function mobileFilter(game){applyFilter(game);closeDrawer()}
+/* ════════════════════════════════════════
+   SEARCH
+════════════════════════════════════════ */
+function wireSearch(inputId,live){
+  var t;
+  document.getElementById(inputId).addEventListener('input',function(){
+    clearTimeout(t);
+    var val=this.value;
+    t=setTimeout(function(){
+      var q=val.toLowerCase().trim();
+      if(!q){
+        if(live){/* sync with active filter */
+          var list=currentFilter==='All'?MODS:MODS.filter(function(m){return m.game===currentFilter});
+          renderModGrid(list);
+        }
+        return;
+      }
+      if(live){
+        document.getElementById('modsTitle').textContent='Search Results';
+        renderModGrid(MODS.filter(function(m){
+          return m.title.toLowerCase().indexOf(q)>-1||
+                 m.game.toLowerCase().indexOf(q)>-1||
+                 m.description.toLowerCase().indexOf(q)>-1;
+        }));
+      } else {
+        // nav search: go to mods page
+        showSection('mods');
+        currentFilter='All';
+        document.getElementById('modsTitle').textContent='Search Results';
+        buildPills();buildDrawerGames();
+        history.replaceState({section:'mods',filter:'All'},'','#mods');
+        renderModGrid(MODS.filter(function(m){
+          return m.title.toLowerCase().indexOf(q)>-1||
+                 m.game.toLowerCase().indexOf(q)>-1||
+                 m.description.toLowerCase().indexOf(q)>-1;
+        }));
+        document.getElementById('modsSearch').value=val;
+      }
+    },200);
+  });
+}
 
 /* ════════════════════════════════════════
-   DOWNLOAD — opens new tab so back button
-   stays on this page, not the locker
+   BUILD FAQ
+════════════════════════════════════════ */
+function buildFAQ(){
+  document.getElementById('faqList').innerHTML=FAQS.map(function(f,i){
+    return'<div class="faq-item" id="faq'+i+'">'+
+      '<button class="faq-q" onclick="toggleFaq('+i+')">'+
+        '<span class="faq-q-text">'+f.q+'</span>'+
+        '<span class="faq-arrow">+</span>'+
+      '</button>'+
+      '<div class="faq-a"><div class="faq-a-inner">'+f.a+'</div></div>'+
+    '</div>';
+  }).join('');
+}
+
+function toggleFaq(i){
+  var item=document.getElementById('faq'+i);
+  var open=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(el){el.classList.remove('open')});
+  if(!open)item.classList.add('open');
+}
+
+/* ════════════════════════════════════════
+   CARD HTML
+════════════════════════════════════════ */
+function cardHTML(m){
+  return'<article class="card" style="--c:'+m.color+'">'+
+    '<div class="card-img">'+
+      '<img src="'+m.image+'" alt="'+m.title+'" loading="lazy" '+
+        'onerror="this.src=\'https://placehold.co/400x225/0f1120/'+m.color.slice(1)+'?text='+encodeURIComponent(m.game)+'\'">'+
+      '<div class="card-overlay"></div>'+
+      '<span class="card-tag">'+m.emoji+' '+m.game+'</span>'+
+      '<span class="card-free-tag">✓ FREE</span>'+
+    '</div>'+
+    '<div class="card-body">'+
+      '<div class="card-game">'+m.game+'</div>'+
+      '<div class="card-title">'+m.title+'</div>'+
+      '<p class="card-desc">'+m.description+'</p>'+
+      '<button class="dl-btn" onclick="handleDownload(\''+m.download+'\',this)">'+
+        '<span class="dl-arrow">⬇</span> FREE DOWNLOAD'+
+      '</button>'+
+    '</div>'+
+  '</article>';
+}
+
+/* ════════════════════════════════════════
+   DOWNLOAD
 ════════════════════════════════════════ */
 function handleDownload(url,btn){
-  // Ripple effect
   var r=document.createElement('span');
   r.className='ripple';
   var rect=btn.getBoundingClientRect();
@@ -727,39 +1350,31 @@ function handleDownload(url,btn){
   r.style.cssText='width:'+size+'px;height:'+size+'px;left:'+(rect.width/2-size/2)+'px;top:'+(rect.height/2-size/2)+'px';
   btn.appendChild(r);
   setTimeout(function(){if(r.parentNode)r.parentNode.removeChild(r)},600);
-  // Visual feedback
   btn.classList.add('fired');
   btn.innerHTML='<span class="dl-arrow">⏳</span> OPENING...';
   setTimeout(function(){
     btn.classList.remove('fired');
     btn.innerHTML='<span class="dl-arrow">⬇</span> FREE DOWNLOAD';
   },2200);
-  // Open in a true new tab — prevents back button leaving this page
   window.open(url,'_blank','noopener,noreferrer');
-  return false;
 }
 
 /* ════════════════════════════════════════
-   SEARCH
+   3D TILT
 ════════════════════════════════════════ */
-var searchTimer;
-document.getElementById('searchInput').addEventListener('input',function(){
-  clearTimeout(searchTimer);
-  var val=this.value;
-  searchTimer=setTimeout(function(){
-    var q=val.toLowerCase().trim();
-    if(!q){applyFilter(activeGame,false);return}
-    activeGame='All';
-    buildPills();buildDrawer();
-    document.getElementById('sectionTitle').textContent='SEARCH RESULTS';
-    history.replaceState({game:'All'},'','#all');
-    renderGrid(MODS.filter(function(m){
-      return m.title.toLowerCase().indexOf(q)>-1||
-             m.description.toLowerCase().indexOf(q)>-1||
-             m.game.toLowerCase().indexOf(q)>-1;
-    }));
-  },200);
-});
+function initTilt(card){
+  card.addEventListener('mousemove',function(e){
+    var r=card.getBoundingClientRect();
+    var x=(e.clientX-r.left)/r.width-.5;
+    var y=(e.clientY-r.top)/r.height-.5;
+    card.style.transition='none';
+    card.style.transform='perspective(800px) rotateY('+(x*6)+'deg) rotateX('+(-y*6)+'deg) translateY(-4px) scale(1.01)';
+  });
+  card.addEventListener('mouseleave',function(){
+    card.style.transition='transform .4s ease';
+    card.style.transform='';
+  });
+}
 
 /* ════════════════════════════════════════
    DRAWER
@@ -776,37 +1391,40 @@ document.getElementById('overlay').onclick=closeDrawer;
 document.getElementById('drawerClose').onclick=closeDrawer;
 
 /* ════════════════════════════════════════
-   3D CARD TILT
+   UTIL
 ════════════════════════════════════════ */
-function initTilt(card){
-  card.addEventListener('mousemove',function(e){
-    var r=card.getBoundingClientRect();
-    var x=(e.clientX-r.left)/r.width-.5;
-    var y=(e.clientY-r.top)/r.height-.5;
-    card.style.transition='none';
-    card.style.transform='perspective(700px) rotateY('+(x*7)+'deg) rotateX('+(-y*7)+'deg) translateY(-4px) scale(1.01)';
-  });
-  card.addEventListener('mouseleave',function(){
-    card.style.transition='transform .4s ease';
-    card.style.transform='';
-  });
-}
+function esc(s){return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
 
 /* ════════════════════════════════════════
    INIT
 ════════════════════════════════════════ */
 (function(){
-  var g=getHashGame();
-  activeGame=g;
+  // Determine initial section from URL hash
+  var h=location.hash.replace('#','');
+  var valid=['home','mods','how','faq'];
+  var initSection=valid.indexOf(h)>-1?h:'home';
+
+  // Build all components
+  buildMosaic();
+  buildMarquee();
+  buildFeatured();
+  buildGameChips();
+  buildFooterLinks();
   buildPills();
-  buildDrawer();
-  buildHeroTiles();
-  document.getElementById('sectionTitle').textContent=
-    g==='All'?'ALL MODS':g.toUpperCase()+' MODS';
-  var list=g==='All'?MODS:MODS.filter(function(m){return m.game===g});
-  renderGrid(list);
-  // Stamp the initial history state so popstate has data from the start
-  history.replaceState({game:g},'',location.hash||'#all');
+  buildDrawerGames();
+  buildFAQ();
+
+  // Render mods grid with default filter
+  applyFilter('All',false);
+
+  // Wire searches
+  wireSearch('navSearch',false);
+  wireSearch('drawerSearch',false);
+  wireSearch('modsSearch',true);
+
+  // Show initial section
+  showSection(initSection,false);
+  history.replaceState({section:initSection,filter:'All'},'',location.hash||'#home');
 })();
 </script>
 </body>
